@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -21,9 +22,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     
     private Button login;
     private EditText email,password;
+    private ProgressBar spinner;
 
 
-    //iniatilizind firebse auth
+    //initializing firebase auth
     //Auth
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
@@ -38,6 +40,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         actionBar.setHomeAsUpIndicator(R.drawable.arrow_back);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+        //pregress bar;
+        spinner = (ProgressBar)findViewById(R.id.progressBar);
+        spinner.setVisibility(View.GONE);
+
 
         login =(Button) findViewById(R.id.login);
         email = (EditText) findViewById(R.id.emailId);
@@ -45,9 +51,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         
         login.setOnClickListener(this);
 
-
-        
-        
 
 
     }
@@ -68,23 +71,36 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         if(v.getId()==R.id.login)
         {
+            spinner.setVisibility(View.VISIBLE);
             String userEmail = email.getText().toString().trim();
             String userPass = password.getText().toString().trim();
+            email.setVisibility(View.GONE);
+            password.setVisibility(View.GONE);
+            login.setVisibility(View.GONE);
 
             //sending credentials entered to validate to firebase
-            mAuth.signInWithEmailAndPassword("test@gmail.com","fker9jfs").addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            mAuth.signInWithEmailAndPassword("test1@gmail.com","123456").addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(task.isSuccessful())
                     {
                         Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
+                        spinner.setVisibility(View.GONE);
+
+
                     }
-                    else
+                    else {
                         Toast.makeText(LoginActivity.this, "login failed", Toast.LENGTH_SHORT).show();
+                        spinner.setVisibility(View.GONE);
+                        email.setVisibility(View.VISIBLE);
+                        password.setVisibility(View.VISIBLE);
+                        login.setVisibility(View.VISIBLE);
+                    }
+
                 }
             });
            
-        
+
 
 
 
