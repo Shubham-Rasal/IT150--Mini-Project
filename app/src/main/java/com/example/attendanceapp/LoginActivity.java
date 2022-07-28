@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -86,6 +87,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     {
                         Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
                         spinner.setVisibility(View.GONE);
+                        Intent i = new Intent(LoginActivity.this,ActiveClassActivity.class);
+                        startActivity(i);
 
 
                     }
