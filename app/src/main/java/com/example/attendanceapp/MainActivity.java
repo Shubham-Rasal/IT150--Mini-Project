@@ -12,6 +12,7 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button StudentLogin,FacultyLogin;
+    Button reg;
 
 
 
@@ -26,18 +27,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         StudentLogin = (Button) findViewById(R.id.studentlog);
         FacultyLogin = (Button) findViewById(R.id.facultylog);
+        reg = (Button) findViewById(R.id.button);
 
         StudentLogin.setOnClickListener(this);
         FacultyLogin.setOnClickListener(this);
+        reg.setOnClickListener(this);
+
 
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
+            case R.id.button:
+                startActivity(new Intent(this,RegistrationActivity.class));
+                break;
             case R.id.facultylog:
                 Intent i = new Intent(this,LoginActivity.class);
-                
                 startActivity(i);
                 break;
             case R.id.studentlog:
