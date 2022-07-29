@@ -196,9 +196,9 @@
 
     <Button
         android:id="@+id/Register"
-        android:layout_width="328dp"
-        android:layout_height="40dp"
-        android:background="@drawable/RoundedRectangle"
+        android:layout_width="350dp"
+        android:layout_height="50dp"
+
         android:text="Register"
         android:textColor="#000000"
         app:layout_constraintBottom_toBottomOf="parent"

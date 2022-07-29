@@ -7,9 +7,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class RegistrationActivity extends AppCompatActivity {
     EditText name,password,confirmPassword,email;
     Button registerButton;
+    FirebaseDatabase Firebase;
+    DatabaseReference databaseReference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,7 +32,9 @@ public class RegistrationActivity extends AppCompatActivity {
                 String PASSWORD=password.getText().toString();
                 String CONFIRM_PASSWORD=confirmPassword.getText().toString();
                 Student s=new Student(NAME,EMAIL,PASSWORD);
-
+                Firebase=FirebaseDatabase.getInstance();
+                databaseReference=Firebase.getReference();
+                databaseReference.child("Student").setValue(s);
             }
         });
 
