@@ -1,7 +1,7 @@
 package com.example.attendanceapp;
 
 public class Student {
-    String name,email,password;
+    private String name,email,password;
 
     public void setName(String name) {
         this.name = name;
