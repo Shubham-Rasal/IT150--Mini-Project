@@ -15,8 +15,7 @@ public class RegistrationActivity extends AppCompatActivity {
     EditText name,password,confirmPassword,email;
     Button registerButton;
     FirebaseDatabase Firebase;
-    DatabaseReference databaseReference;
-    int i=0;
+    DatabaseReference student_databaseReference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,10 +35,9 @@ public class RegistrationActivity extends AppCompatActivity {
                 if(PASSWORD.equals(CONFIRM_PASSWORD)) {
                     Student s = new Student(NAME, EMAIL, PASSWORD);
                     Firebase = FirebaseDatabase.getInstance();
-                    databaseReference = Firebase.getReference("Students");
-                    databaseReference.child("Student"+i).setValue(s);
+                    student_databaseReference = Firebase.getReference("Students");
+                    student_databaseReference.push().setValue(s);
                     Toast.makeText(RegistrationActivity.this, "Registered!!", Toast.LENGTH_SHORT).show();
-                    i+=1;
                 }
                 else {
                     Toast.makeText(RegistrationActivity.this, "Passwords don't match!!!", Toast.LENGTH_SHORT).show();
