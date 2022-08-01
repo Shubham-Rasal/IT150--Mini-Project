@@ -73,8 +73,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if(v.getId()==R.id.login)
         {
             spinner.setVisibility(View.VISIBLE);
-            String userEmail = email.getText().toString().trim();
-            String userPass = password.getText().toString().trim();
+//            String userEmail = email.getText().toString().trim();
+//            String userPass = password.getText().toString().trim();
             email.setVisibility(View.GONE);
             password.setVisibility(View.GONE);
             login.setVisibility(View.GONE);
@@ -89,6 +89,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         spinner.setVisibility(View.GONE);
                         Intent i = new Intent(LoginActivity.this,ActiveClassActivity.class);
                         startActivity(i);
+                        finish();
 
 
                     }

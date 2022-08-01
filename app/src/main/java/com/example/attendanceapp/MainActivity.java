@@ -9,6 +9,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button StudentLogin,FacultyLogin;
@@ -27,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         StudentLogin = (Button) findViewById(R.id.studentlog);
         FacultyLogin = (Button) findViewById(R.id.facultylog);
 
+
         StudentLogin.setOnClickListener(this);
         FacultyLogin.setOnClickListener(this);
 
@@ -43,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.studentlog:
                 startActivity(new Intent(this,LoginActivity.class));
                 break;
+
             default:
                 throw new IllegalStateException("Unexpected value: " + v.getId());
         }

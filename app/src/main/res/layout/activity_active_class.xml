@@ -6,4 +6,46 @@
     android:layout_height="match_parent"
     tools:context=".ActiveClassActivity">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="304dp"
+        android:layout_height="228dp"
+        android:layout_marginTop="132dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="210dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="52dp"
+            android:gravity="center_vertical"
+            android:text="IT150 -Lab "
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/authenticate"
+            android:layout_width="97dp"
+            android:layout_height="0dp"
+            android:layout_marginEnd="9dp"
+            android:text="Enter"
+            app:layout_constraintBottom_toBottomOf="@+id/textView"
+            app:layout_constraintEnd_toEndOf="@+id/textView"
+            app:layout_constraintTop_toTopOf="@+id/textView" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/activeTitle"
+        android:layout_width="145dp"
+        android:layout_height="33dp"
+        android:layout_marginStart="60dp"
+        android:text="Active Classes"
+        android:textColor="#311B92"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
