@@ -58,7 +58,7 @@
         app:layout_constraintVertical_bias="0.207" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName"
+        android:id="@+id/className"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -99,7 +99,7 @@
         app:layout_constraintVertical_bias="0.483" />
 
     <Button
-        android:id="@+id/button6"
+        android:id="@+id/createClass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Start New Class"
