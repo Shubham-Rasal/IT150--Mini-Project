@@ -1,6 +1,8 @@
 package com.example.attendanceapp;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -13,10 +15,14 @@ import java.util.concurrent.Executor;
 public class ActiveClassActivity extends AppCompatActivity {
 
 
+    Button authenticate ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_active_class);
+        authenticate = (Button) findViewById(R.id.authenticate);
+
 
 
         //Adding biometrics auth
@@ -25,11 +31,13 @@ public class ActiveClassActivity extends AppCompatActivity {
                 executor, new BiometricPrompt.AuthenticationCallback() {
             @Override
             public void onAuthenticationError(int errorCode,
+
                                               @NonNull CharSequence errString) {
                 super.onAuthenticationError(errorCode, errString);
                 Toast.makeText(getApplicationContext(),
                                 "Authentication error: " + errString, Toast.LENGTH_SHORT)
                         .show();
+
             }
 
             @Override
@@ -38,6 +46,11 @@ public class ActiveClassActivity extends AppCompatActivity {
                 super.onAuthenticationSucceeded(result);
                 Toast.makeText(getApplicationContext(),
                         "Authentication succeeded!", Toast.LENGTH_SHORT).show();
+                authenticate.setVisibility(View.GONE);
+
+
+
+
             }
 
             @Override
@@ -46,6 +59,8 @@ public class ActiveClassActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Authentication failed",
                                 Toast.LENGTH_SHORT)
                         .show();
+
+
             }
         });
 
@@ -54,10 +69,14 @@ public class ActiveClassActivity extends AppCompatActivity {
                 .setSubtitle("Log in using your biometric credential")
                 .setNegativeButtonText("Use account password")
                 .build();
+        authenticate.setOnClickListener(v -> {
+
+           //calling the authenticate method
+            biometricPrompt.authenticate(promptInfo);
+
+        });
 
 
-
-        biometricPrompt.authenticate(promptInfo);
 
     }
 }
