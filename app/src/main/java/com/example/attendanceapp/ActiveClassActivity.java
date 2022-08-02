@@ -8,10 +8,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.biometric.BiometricPrompt;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.content.ContextCompat;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.util.concurrent.Executor;
 
@@ -20,13 +17,12 @@ public class ActiveClassActivity extends AppCompatActivity {
 
     Button authenticate ;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_active_class);
         authenticate = (Button) findViewById(R.id.authenticate);
+
 
 
         //Adding biometrics auth
@@ -53,6 +49,8 @@ public class ActiveClassActivity extends AppCompatActivity {
                 authenticate.setVisibility(View.GONE);
 
 
+
+
             }
 
             @Override
@@ -77,9 +75,6 @@ public class ActiveClassActivity extends AppCompatActivity {
             biometricPrompt.authenticate(promptInfo);
 
         });
-
-
-
 
 
 
