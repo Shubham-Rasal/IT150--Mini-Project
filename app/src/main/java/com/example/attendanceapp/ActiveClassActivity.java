@@ -29,14 +29,6 @@ public class ActiveClassActivity extends AppCompatActivity {
         authenticate = (Button) findViewById(R.id.authenticate);
 
 
-
-
-
-
-
-
-
-
         //Adding biometrics auth
         Executor executor = ContextCompat.getMainExecutor(this);
         BiometricPrompt biometricPrompt = new BiometricPrompt(ActiveClassActivity.this,
