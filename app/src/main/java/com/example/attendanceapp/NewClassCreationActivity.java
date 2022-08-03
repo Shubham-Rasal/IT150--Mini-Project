@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.Serializable;
 import java.util.Date;
 
 
@@ -82,8 +83,9 @@ public class NewClassCreationActivity extends AppCompatActivity {
                     firebaseDatabase=FirebaseDatabase.getInstance();
                     databaseReference=firebaseDatabase.getReference("Classes");
                     databaseReference.push().setValue(c);
+                    Toast.makeText(NewClassCreationActivity.this, "New Class has been Created", Toast.LENGTH_SHORT).show();
                     Intent intent=new Intent(NewClassCreationActivity.this,TeacherActivity.class);
-                    intent.putExtra(EXTRA,(Parcelable) c);
+                    intent.putExtra(EXTRA,(Serializable) c);
                     startActivity(intent);
 
                 }

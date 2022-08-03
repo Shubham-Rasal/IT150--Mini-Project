@@ -1,8 +1,8 @@
 package com.example.attendanceapp;
 
-import java.util.Date;
+import java.io.Serializable;
 
-public class Class {
+public class Class implements Serializable {
     private String name;
     private String begin,end,date;
 

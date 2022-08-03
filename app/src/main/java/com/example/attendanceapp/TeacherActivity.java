@@ -4,16 +4,19 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.TextView;
 
 public class TeacherActivity extends AppCompatActivity {
-
+    TextView classDate;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teacher);
+        classDate=findViewById(R.id.ClassDate);
         Intent intent=getIntent();
-        Class c=intent.getParcelableExtra(NewClassCreationActivity.EXTRA);
+        Class c= (Class) intent.getSerializableExtra(NewClassCreationActivity.EXTRA);
         String date=c.getDate();
+        classDate.setText(date);
 
     }
 }
