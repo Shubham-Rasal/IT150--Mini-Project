@@ -3,9 +3,13 @@ package com.example.attendanceapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.TimePickerDialog;
+<<<<<<< HEAD
+import android.os.Bundle;
+=======
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+>>>>>>> dev
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,7 +24,10 @@ import java.util.Date;
 
 
 public class NewClassCreationActivity extends AppCompatActivity {
+<<<<<<< HEAD
+=======
     public static final String EXTRA="com.example.attendanceapp.extra.ClassObj";
+>>>>>>> dev
     private int hour_begin,minute_begin,hour_end,minute_end;
     private TextView textView1,textView2;
     private EditText className;
@@ -82,10 +89,13 @@ public class NewClassCreationActivity extends AppCompatActivity {
                     firebaseDatabase=FirebaseDatabase.getInstance();
                     databaseReference=firebaseDatabase.getReference("Classes");
                     databaseReference.push().setValue(c);
+<<<<<<< HEAD
+=======
                     Intent intent=new Intent(NewClassCreationActivity.this,TeacherActivity.class);
                     intent.putExtra(EXTRA,(Parcelable) c);
                     startActivity(intent);
 
+>>>>>>> dev
                 }
             }
         });

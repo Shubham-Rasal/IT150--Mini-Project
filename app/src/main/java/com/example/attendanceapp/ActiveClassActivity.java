@@ -8,10 +8,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.biometric.BiometricPrompt;
+<<<<<<< HEAD
+import androidx.core.content.ContextCompat;
+=======
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.content.ContextCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+>>>>>>> dev
 
 import java.util.concurrent.Executor;
 
@@ -19,8 +23,11 @@ public class ActiveClassActivity extends AppCompatActivity {
 
 
     Button authenticate ;
+<<<<<<< HEAD
+=======
+    SwipeRefreshLayout swipeRefreshLayout;
 
-
+>>>>>>> dev
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +36,10 @@ public class ActiveClassActivity extends AppCompatActivity {
         authenticate = (Button) findViewById(R.id.authenticate);
 
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> dev
         //Adding biometrics auth
         Executor executor = ContextCompat.getMainExecutor(this);
         BiometricPrompt biometricPrompt = new BiometricPrompt(ActiveClassActivity.this,
@@ -53,6 +64,11 @@ public class ActiveClassActivity extends AppCompatActivity {
                 authenticate.setVisibility(View.GONE);
 
 
+<<<<<<< HEAD
+
+
+=======
+>>>>>>> dev
             }
 
             @Override
@@ -78,9 +94,19 @@ public class ActiveClassActivity extends AppCompatActivity {
 
         });
 
+<<<<<<< HEAD
+=======
+        //adding swiping to refresh
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Toast.makeText(ActiveClassActivity.this, "test", Toast.LENGTH_SHORT).show();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
 
-
+>>>>>>> dev
 
 
     }
