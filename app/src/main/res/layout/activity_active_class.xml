@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ActiveClassActivity">
 
-<<<<<<< HEAD
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="304dp"
@@ -39,63 +38,18 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
-        android:id="@+id/activeTitle"
-        android:layout_width="145dp"
-        android:layout_height="33dp"
-        android:layout_marginStart="60dp"
-=======
-    <TextView
-        android:id="@+id/activeTitle"
+        android:id="@+id/activeTitle1"
         android:layout_width="149dp"
         android:layout_height="42dp"
         android:layout_marginStart="58dp"
         android:layout_marginTop="87dp"
         android:layout_marginBottom="61dp"
->>>>>>> dev
         android:text="Active Classes"
         android:textColor="#311B92"
         android:textSize="20sp"
         android:textStyle="bold"
-<<<<<<< HEAD
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
         app:layout_constraintStart_toStartOf="parent" />
-=======
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="42dp"
-        android:layout_marginEnd="42dp"
-        android:layout_marginBottom="471dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activeTitle">
-
-        <Button
-            android:id="@+id/authenticate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Enter"
-            tools:ignore="TouchTargetSizeCheck"
-            tools:layout_editor_absoluteX="127dp"
-            tools:layout_editor_absoluteY="63dp" />
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="190dp"
-            android:layout_height="43dp"
-            android:gravity="center_vertical"
-            android:text="IT150 -Lab "
-            tools:layout_editor_absoluteX="25dp"
-            tools:layout_editor_absoluteY="68dp" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
->>>>>>> dev
 </androidx.constraintlayout.widget.ConstraintLayout>

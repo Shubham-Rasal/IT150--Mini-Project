@@ -2,18 +2,16 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-<<<<<<< HEAD
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".TeacherActivity">
 
     <TextView
-=======
     android:id="@+id/CardView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".TeacherActivity">
+    tools:context=".TeacherActivity"/>
 
     <TextView
         android:id="@+id/textView3"
@@ -28,8 +26,6 @@
         app:layout_constraintVertical_bias="0.607" />
 
     <TextView
->>>>>>> dev
-        android:id="@+id/textView"
         android:layout_width="337dp"
         android:layout_height="50dp"
         android:text="Completed Classes"
@@ -41,8 +37,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.039" />
 
-<<<<<<< HEAD
-=======
 
 
 
@@ -61,5 +55,4 @@
         </FrameLayout>
 
 
->>>>>>> dev
 </androidx.constraintlayout.widget.ConstraintLayout>
