@@ -1,12 +1,7 @@
 package com.example.attendanceapp;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -14,9 +9,10 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
@@ -29,7 +25,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     //initializing firebase auth
     //Auth
-    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,10 +35,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         //action bar
 
         ActionBar actionBar = getSupportActionBar();
+        assert actionBar != null;
         actionBar.setHomeAsUpIndicator(R.drawable.arrow_back);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        //pregress bar;
+        //progress bar;
         spinner = (ProgressBar)findViewById(R.id.progressBar);
         spinner.setVisibility(View.GONE);
 
@@ -61,10 +58,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                this.finish();
-                return true;
+        if (item.getItemId() == android.R.id.home) {
+            this.finish();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -81,41 +77,38 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             login.setVisibility(View.GONE);
 
             //sending credentials entered to validate to firebase
-            mAuth.signInWithEmailAndPassword(userEmail,userPass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if(task.isSuccessful())
-                    {
-                        Intent itype = getIntent();
-                        int type = itype.getIntExtra("type",2);
+            mAuth.signInWithEmailAndPassword("test1@gmail.com","123456").addOnCompleteListener(task -> {
+                if(task.isSuccessful())
+                {
+                    Intent itype = getIntent();
+                    int type = itype.getIntExtra("type",2);
 //                        Toast.makeText(LoginActivity.this, ""+type, Toast.LENGTH_SHORT).show();
-                        Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
 
-                        Intent i;
-                        if(type==1)
-                        {
-                            i = new Intent(LoginActivity.this, TeacherActivity.class);
-
-                        }
-                        else{
-                            i = new Intent(LoginActivity.this, ActiveClassActivity.class);
-
-                        }
-                        spinner.setVisibility(View.GONE);
-                        startActivity(i);
-                        finish();
-
+                    Intent i;
+                    if(type==1)
+                    {
+                        i = new Intent(LoginActivity.this, TeacherActivity.class);
 
                     }
-                    else {
-                        Toast.makeText(LoginActivity.this, "login failed", Toast.LENGTH_SHORT).show();
-                        spinner.setVisibility(View.GONE);
-                        email.setVisibility(View.VISIBLE);
-                        password.setVisibility(View.VISIBLE);
-                        login.setVisibility(View.VISIBLE);
+                    else{
+                        i = new Intent(LoginActivity.this, ActiveClassActivity.class);
+
                     }
+                    spinner.setVisibility(View.GONE);
+                    startActivity(i);
+                    finish();
+
 
                 }
+                else {
+                    Toast.makeText(LoginActivity.this, "login failed", Toast.LENGTH_SHORT).show();
+                    spinner.setVisibility(View.GONE);
+                    email.setVisibility(View.VISIBLE);
+                    password.setVisibility(View.VISIBLE);
+                    login.setVisibility(View.VISIBLE);
+                }
+
             });
            
 
