@@ -91,24 +91,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //                        Toast.makeText(LoginActivity.this, ""+type, Toast.LENGTH_SHORT).show();
                         Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
 
+                        Intent i;
                         if(type==1)
                         {
-                            Intent i = new Intent(LoginActivity.this,TeacherActivity.class);
-                            spinner.setVisibility(View.GONE);
-
-                            startActivity(i);
-                            finish();
+                            i = new Intent(LoginActivity.this, TeacherActivity.class);
 
                         }
                         else{
-                            Intent i = new Intent(LoginActivity.this,ActiveClassActivity.class);
-                            spinner.setVisibility(View.GONE);
+                            i = new Intent(LoginActivity.this, ActiveClassActivity.class);
 
-                            startActivity(i);
-                            finish();
                         }
-
-
+                        spinner.setVisibility(View.GONE);
+                        startActivity(i);
+                        finish();
 
 
                     }
