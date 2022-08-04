@@ -11,9 +11,7 @@ public class TeacherActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teacher);
-        Intent intent=getIntent();
-        Class c=intent.getParcelableExtra(NewClassCreationActivity.EXTRA);
-        String date=c.getDate();
+
 
     }
 }

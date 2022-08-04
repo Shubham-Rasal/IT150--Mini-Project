@@ -52,10 +52,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.facultylog:
                 Intent i = new Intent(this,LoginActivity.class);
+                i.putExtra("type",1);
                 startActivity(i);
                 break;
             case R.id.studentlog:
-                startActivity(new Intent(this,LoginActivity.class));
+                Intent intent = new Intent(this,LoginActivity.class);
+                intent.putExtra("type",2);
+                startActivity(intent);
+
                 break;
 
             default:
