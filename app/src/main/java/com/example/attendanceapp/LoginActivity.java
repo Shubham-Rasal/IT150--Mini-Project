@@ -73,14 +73,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if(v.getId()==R.id.login)
         {
             spinner.setVisibility(View.VISIBLE);
-//            String userEmail = email.getText().toString().trim();
-//            String userPass = password.getText().toString().trim();
+            String userEmail = email.getText().toString().trim();
+            String userPass = password.getText().toString().trim();
             email.setVisibility(View.GONE);
             password.setVisibility(View.GONE);
             login.setVisibility(View.GONE);
 
             //sending credentials entered to validate to firebase
-            mAuth.signInWithEmailAndPassword("test1@gmail.com","123456").addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            mAuth.signInWithEmailAndPassword(userEmail,userPass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(task.isSuccessful())

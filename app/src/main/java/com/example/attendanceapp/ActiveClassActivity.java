@@ -19,7 +19,7 @@ public class ActiveClassActivity extends AppCompatActivity {
 
 
     Button authenticate ;
-    SwipeRefreshLayout swipeRefreshLayout;
+
 
 
     @Override
@@ -78,14 +78,7 @@ public class ActiveClassActivity extends AppCompatActivity {
 
         });
 
-        //adding swiping to refresh
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                Toast.makeText(ActiveClassActivity.this, "test", Toast.LENGTH_SHORT).show();
-                swipeRefreshLayout.setRefreshing(false);
-            }
-        });
+
 
 
 
