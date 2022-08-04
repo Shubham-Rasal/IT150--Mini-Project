@@ -3,7 +3,6 @@ package com.example.attendanceapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.TimePickerDialog;
-import android.os.Bundle;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -17,13 +16,12 @@ import android.widget.Toast;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.Serializable;
 import java.util.Date;
 
 
 public class NewClassCreationActivity extends AppCompatActivity {
-
     public static final String EXTRA="com.example.attendanceapp.extra.ClassObj";
-
     private int hour_begin,minute_begin,hour_end,minute_end;
     private TextView textView1,textView2;
     private EditText className;
@@ -85,10 +83,11 @@ public class NewClassCreationActivity extends AppCompatActivity {
                     firebaseDatabase=FirebaseDatabase.getInstance();
                     databaseReference=firebaseDatabase.getReference("Classes");
                     databaseReference.push().setValue(c);
-
-                    Intent intent=new Intent(NewClassCreationActivity.this,TeacherActivity.class);
-                    intent.putExtra(EXTRA,(Parcelable) c);
-                    startActivity(intent);
+                    Toast.makeText(NewClassCreationActivity.this, "New Class has been Created", Toast.LENGTH_SHORT).show();
+                    Intent intent=new Intent();
+                    intent.putExtra(EXTRA,(Serializable) c);
+                    setResult(1,intent);
+                    finish();
 
                 }
             }
