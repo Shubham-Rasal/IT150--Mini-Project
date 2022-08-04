@@ -84,9 +84,10 @@ public class NewClassCreationActivity extends AppCompatActivity {
                     databaseReference=firebaseDatabase.getReference("Classes");
                     databaseReference.push().setValue(c);
                     Toast.makeText(NewClassCreationActivity.this, "New Class has been Created", Toast.LENGTH_SHORT).show();
-                    Intent intent=new Intent(NewClassCreationActivity.this,TeacherActivity.class);
+                    Intent intent=new Intent();
                     intent.putExtra(EXTRA,(Serializable) c);
-                    startActivity(intent);
+                    setResult(1,intent);
+                    finish();
 
                 }
             }

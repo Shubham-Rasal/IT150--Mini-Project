@@ -15,7 +15,8 @@ import com.google.firebase.database.FirebaseDatabase;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button StudentLogin,FacultyLogin;
-    private Button reg,new_class;
+    private Button reg,new_class,teacherdashboard;
+
 
 
 
@@ -32,18 +33,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         FacultyLogin = (Button) findViewById(R.id.facultylog);
         reg = (Button) findViewById(R.id.button);
         new_class=findViewById(R.id.button3);
-
+        teacherdashboard=findViewById(R.id.TeacherDashboard);
 
         StudentLogin.setOnClickListener(this);
         FacultyLogin.setOnClickListener(this);
         reg.setOnClickListener(this);
         new_class.setOnClickListener(this);
+        teacherdashboard.setOnClickListener(this);
 
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
+            case R.id.TeacherDashboard:
+                startActivity(new Intent(this,TeacherActivity.class));
+                break;
             case R.id.button:
                 startActivity(new Intent(this,RegistrationActivity.class));
                 break;
