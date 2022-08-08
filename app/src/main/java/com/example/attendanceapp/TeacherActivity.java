@@ -90,7 +90,6 @@ public class TeacherActivity extends AppCompatActivity {
         databaseReference = firebaseDatabase.getReference("Classes");
         className=new ArrayList<>();
         storeCorrespondingKeys=new ArrayList<>();
-//        className.add("Abhishek");
         MyAdapter myAdapter = new MyAdapter(TeacherActivity.this, R.layout.cardview, className);
 
         databaseReference.addValueEventListener(new ValueEventListener() {
