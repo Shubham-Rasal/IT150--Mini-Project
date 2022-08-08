@@ -90,7 +90,7 @@ public class TeacherActivity extends AppCompatActivity {
         databaseReference = firebaseDatabase.getReference("Classes");
         className=new ArrayList<>();
         storeCorrespondingKeys=new ArrayList<>();
-        MyAdapter myAdapter = new MyAdapter(TeacherActivity.this, R.layout.cardview, className);
+//        MyAdapter myAdapter = new MyAdapter(TeacherActivity.this, R.layout.cardview, className);
 
         databaseReference.addValueEventListener(new ValueEventListener() {
 
@@ -99,16 +99,14 @@ public class TeacherActivity extends AppCompatActivity {
                 for (DataSnapshot classSnapshot : snapshot.getChildren()) {
                     Class c = classSnapshot.getValue(Class.class);
                     if ((c.getActive()).equals("0")) {
-//                        Toast.makeText(TeacherActivity.this,classSnapshot.getKey(), Toast.LENGTH_SHORT).show();
-                        if(!storeCorrespondingKeys.contains(classSnapshot.getKey()))
+                        if(!storeCorrespondingKeys.contains(classSnapshot.getKey())) {
                             className.add(c.getName());
-
-                    }
+                        }
                     storeCorrespondingKeys.add(classSnapshot.getKey());
+                    }
                 }
+                MyAdapter myAdapter = new MyAdapter(TeacherActivity.this, R.layout.cardview, className);
                 listView.setAdapter(myAdapter);
-
-//                Toast.makeText(TeacherActivity.this,"Err!!", Toast.LENGTH_SHORT).show();
             }
 
             @Override
