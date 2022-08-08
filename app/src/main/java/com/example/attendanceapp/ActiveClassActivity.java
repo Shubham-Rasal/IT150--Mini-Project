@@ -1,6 +1,7 @@
 package com.example.attendanceapp;
 
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -9,6 +10,15 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.core.content.ContextCompat;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.concurrent.Executor;
 
@@ -16,6 +26,16 @@ public class ActiveClassActivity extends AppCompatActivity {
 
 
     Button authenticate ;
+    FirebaseDatabase db  = FirebaseDatabase.getInstance();
+    DatabaseReference ref = db.getReference();
+
+
+    //auth
+    FirebaseAuth userAuth = FirebaseAuth.getInstance();
+    FirebaseUser currentUser = userAuth.getCurrentUser();
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +58,10 @@ public class ActiveClassActivity extends AppCompatActivity {
                                 "Authentication error: " + errString, Toast.LENGTH_SHORT)
                         .show();
 
+
+
+
+
             }
 
             @Override
@@ -47,6 +71,8 @@ public class ActiveClassActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),
                         "Authentication succeeded!", Toast.LENGTH_SHORT).show();
                 authenticate.setVisibility(View.GONE);
+
+
 
 
 
@@ -78,5 +104,18 @@ public class ActiveClassActivity extends AppCompatActivity {
 
 
 
+
+
+
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = userAuth.getCurrentUser();
+        if(currentUser == null){
+            Toast.makeText(this, "No current user", Toast.LENGTH_SHORT).show();
+
+        }
     }
 }

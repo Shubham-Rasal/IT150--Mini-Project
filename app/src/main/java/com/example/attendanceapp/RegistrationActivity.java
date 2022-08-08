@@ -22,7 +22,7 @@ public class RegistrationActivity extends AppCompatActivity {
     EditText name,password,confirmPassword,email;
     Button registerButton;
     FirebaseDatabase Firebase;
-    DatabaseReference student_databaseReference;
+    DatabaseReference studentRef;
     FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,9 +53,22 @@ public class RegistrationActivity extends AppCompatActivity {
 //                                        updateUI(user);
                                         Student s = new Student(NAME, EMAIL, PASSWORD);
                                         Firebase = FirebaseDatabase.getInstance();
-                                        student_databaseReference = Firebase.getReference("Students");
-                                        student_databaseReference.push().setValue(s);
-                                        Toast.makeText(RegistrationActivity.this, "Registered Successfully!!", Toast.LENGTH_SHORT).show();
+                                        studentRef = Firebase.getReference("Students");
+                                        studentRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                                .setValue(s)
+                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                if(task.isSuccessful())
+                                                                    Toast.makeText(RegistrationActivity.this, "Registered Successfully!!", Toast.LENGTH_SHORT).show();
+                                                                else
+                                                                    Toast.makeText(RegistrationActivity.this, "Failed to register user", Toast.LENGTH_SHORT).show();
+
+                                                            }
+                                                        });
+
+//                                        student_databaseReference.push().setValue(s);
+
                                     } else {
                                         if(PASSWORD.length()<6){
                                             Toast.makeText(RegistrationActivity.this, "The password should have at least 6 characters", Toast.LENGTH_SHORT).show();
