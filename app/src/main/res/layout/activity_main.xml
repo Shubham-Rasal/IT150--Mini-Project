@@ -62,13 +62,9 @@
         android:id="@+id/TeacherDashboard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"
-        tools:layout_editor_absoluteX="131dp"
-        tools:layout_editor_absoluteY="93dp" />
-
         android:layout_marginTop="23dp"
         android:layout_marginEnd="11dp"
-        android:text="TeacherDashboard"
+        android:text="Teacher Dashboard"
         app:layout_constraintEnd_toStartOf="@+id/facultylog"
         app:layout_constraintTop_toBottomOf="@+id/studentlog" />
 </androidx.constraintlayout.widget.ConstraintLayout>

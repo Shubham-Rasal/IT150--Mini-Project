@@ -39,7 +39,6 @@
         android:layout_height="78dp"
         app:cardBackgroundColor="#F37070"
         app:cardCornerRadius="15dp"
-        app:cardElevation="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.492"
@@ -61,6 +60,7 @@
             android:layout_height="40dp"
             android:layout_marginStart="280dp"
             android:layout_marginTop="19dp"
+            android:hapticFeedbackEnabled="true"
             app:srcCompat="@drawable/cross" />
     </androidx.cardview.widget.CardView>
 
@@ -77,29 +77,17 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.935" />
 
+    <ListView
+        android:id="@+id/listView1"
+        android:layout_width="405dp"
+        android:layout_height="311dp"
+        android:divider="@null"
+        android:dividerHeight="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.199" />
 
-    <!--    <androidx.cardview.widget.CardView-->
-    <!--        android:layout_width="340dp"-->
-    <!--        android:layout_height="78dp"-->
-    <!--        android:cardCornerRadius="20dp"-->
-    <!--        app:cardBackgroundColor="#F37070"-->
-    <!--        app:cardCornerRadius="15dp"-->
-    <!--        app:cardElevation="10dp"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintHorizontal_bias="0.492"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="parent"-->
-    <!--        app:layout_constraintVertical_bias="0.764">-->
-
-    <!--        <TextView-->
-    <!--            android:id="@+id/ClassText"-->
-    <!--            android:layout_width="wrap_content"-->
-    <!--            android:layout_height="30dp"-->
-    <!--            android:layout_margin="24dp"-->
-    <!--            android:gravity="center"-->
-    <!--            android:textColor="#000000"-->
-    <!--            android:textSize="18dp" />-->
-    <!--    </androidx.cardview.widget.CardView>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
