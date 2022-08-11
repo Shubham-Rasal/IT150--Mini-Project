@@ -8,6 +8,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -32,6 +34,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class TeacherActivity extends AppCompatActivity {
     private TextView classDate;
@@ -45,6 +48,7 @@ public class TeacherActivity extends AppCompatActivity {
 
 
     private ListView listView;
+    private ListView presentStudents;
     private ArrayList<String> className;
     private ArrayList<String> storeCorrespondingKeys;
 
@@ -116,7 +120,7 @@ public class TeacherActivity extends AppCompatActivity {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         Toast.makeText(TeacherActivity.this, ""+id, Toast.LENGTH_SHORT).show();
-                        onButtonShowPopupWindowClick(view);
+                        onButtonShowPopupWindowClick(view,snapshot);
                     }
                 });
                 listView.setAdapter(myAdapter);
@@ -141,7 +145,7 @@ public class TeacherActivity extends AppCompatActivity {
 
     }
 
-    public void onButtonShowPopupWindowClick(View view) {
+    public void onButtonShowPopupWindowClick(View view,DataSnapshot snapshot) {
 
         // inflate the layout of the popup window
         LayoutInflater inflater = (LayoutInflater)
@@ -152,18 +156,26 @@ public class TeacherActivity extends AppCompatActivity {
 
 
         // create the popup window
-        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
-        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        int width = ConstraintLayout.LayoutParams.MATCH_PARENT;
+        int height = ConstraintLayout.LayoutParams.MATCH_PARENT;
         boolean focusable = true; // lets taps outside the popup also dismiss it
         final PopupWindow popupWindow = new PopupWindow(popupView, width, height, true);
 
         // show the popup window
         // which view you pass in doesn't matter, it is only used for the window token
         popupWindow.showAtLocation(view, Gravity.CENTER, 10, 0);
-        TextView popupText = (TextView) popupView.findViewById(R.id.popup_window);
+        TextView popupText = (TextView) popupView.findViewById(R.id.popup_title);
+        presentStudents = (ListView) popupView.findViewById(R.id.present_list);
+
+        //Array adapter for student list
+        String temp[] = {"this","us","kfjldkjglf"};
+        ArrayAdapter studentAdapter = new ArrayAdapter(this, android.R.layout.simple_selectable_list_item,temp);
+        presentStudents.setAdapter(studentAdapter);
 
 
-        popupText.setText("hello");
+        popupText.setText("title");
+
+        Toast.makeText(this, ""+snapshot, Toast.LENGTH_SHORT).show();
 
 
         // dismiss the popup window when touched
