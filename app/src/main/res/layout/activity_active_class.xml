@@ -35,6 +35,19 @@
             app:layout_constraintBottom_toBottomOf="@+id/class_label"
             app:layout_constraintEnd_toEndOf="@+id/class_label"
             app:layout_constraintTop_toTopOf="@+id/class_label" />
+
+        <TextView
+            android:id="@+id/no_class"
+            android:layout_width="209dp"
+            android:layout_height="75dp"
+            android:layout_marginTop="52dp"
+            android:gravity="center|center_horizontal|center_vertical"
+            android:text="No active class available"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.505"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView

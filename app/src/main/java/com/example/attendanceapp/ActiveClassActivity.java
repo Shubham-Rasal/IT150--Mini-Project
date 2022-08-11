@@ -1,7 +1,6 @@
 package com.example.attendanceapp;
 
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -12,10 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
-import androidx.core.content.ContextCompat;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -35,6 +31,7 @@ public class ActiveClassActivity extends AppCompatActivity {
 
     Button authenticate ;
     TextView classLabel;
+    TextView noClass;
     FirebaseDatabase db  = FirebaseDatabase.getInstance();
     DatabaseReference classRef = db.getReference("Classes");
     DatabaseReference testRef = db.getReference("Students");
@@ -54,25 +51,36 @@ public class ActiveClassActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_active_class);
         authenticate = (Button) findViewById(R.id.authenticate);
+        classLabel = (TextView)findViewById(R.id.class_label);
+        noClass = (TextView) findViewById(R.id.no_class);
+        authenticate.setVisibility(View.GONE);
+        classLabel.setVisibility(View.GONE);
+
 
         //getting active classes
-        DatabaseReference dbRef = db.getReference();
-        Query query = dbRef.child("Classes").orderByChild("active").equalTo(1);
+        Query query = classRef.orderByChild("active").equalTo("1kjk");
 
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(String.valueOf(dataSnapshot.getValue())=="null") {
-                    Toast.makeText(ActiveClassActivity.this, "no active class availlable", Toast.LENGTH_SHORT).show();
-                return;
-                }
+                    Toast.makeText(ActiveClassActivity.this, "no active class available"+dataSnapshot.getChildren(), Toast.LENGTH_SHORT).show();
 
-                Log.d("Active classes",String.valueOf(dataSnapshot));
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                        activeclassRef= postSnapshot.getRef();
-                    Toast.makeText(ActiveClassActivity.this, ""+String.valueOf(postSnapshot.child("name").getValue()), Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    authenticate.setVisibility(View.VISIBLE);
+                    classLabel.setVisibility(View.VISIBLE);
+                    noClass.setVisibility(View.GONE);
+
+
+                    Log.d("Active classes", String.valueOf(dataSnapshot));
+                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                        activeclassRef = postSnapshot.getRef();
+                        Toast.makeText(ActiveClassActivity.this, "" + String.valueOf(postSnapshot.child("name").getValue()), Toast.LENGTH_SHORT).show();
+                        classLabel.setText(String.valueOf(postSnapshot.child("name").getValue()));
 
                         break;
+                    }
                 }
 
             }
@@ -81,16 +89,9 @@ public class ActiveClassActivity extends AppCompatActivity {
                 Log.e("Firebase error",String.valueOf(databaseError));
 
             }
-
-
         };
 
         query.addValueEventListener(valueEventListener);
-
-
-
-
-
 
 
         //Adding biometrics auth
@@ -125,7 +126,7 @@ public class ActiveClassActivity extends AppCompatActivity {
 
                 //adding student to class object
 
-                activeclassRef.child("Students_present").push().setValue(currentUser.getUid())
+                activeclassRef.child("students_present").push().setValue(currentUser.getUid())
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
