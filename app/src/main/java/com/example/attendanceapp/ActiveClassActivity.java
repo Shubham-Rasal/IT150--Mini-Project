@@ -24,6 +24,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.concurrent.Executor;
 
 public class ActiveClassActivity extends AppCompatActivity {
@@ -36,12 +37,15 @@ public class ActiveClassActivity extends AppCompatActivity {
     DatabaseReference classRef = db.getReference("Classes");
     DatabaseReference testRef = db.getReference("Students");
     DatabaseReference activeclassRef;
+    DataSnapshot activeClass;
 
 
 
     //auth
     FirebaseAuth userAuth = FirebaseAuth.getInstance();
     FirebaseUser currentUser = userAuth.getCurrentUser();
+
+
 
 
 
@@ -58,7 +62,9 @@ public class ActiveClassActivity extends AppCompatActivity {
 
 
         //getting active classes
-        Query query = classRef.orderByChild("active").equalTo("1kjk");
+
+        Query query = classRef.orderByChild("active").equalTo("1");
+
 
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
@@ -76,6 +82,9 @@ public class ActiveClassActivity extends AppCompatActivity {
                     Log.d("Active classes", String.valueOf(dataSnapshot));
                     for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                         activeclassRef = postSnapshot.getRef();
+
+                        activeClass = postSnapshot;
+
                         Toast.makeText(ActiveClassActivity.this, "" + String.valueOf(postSnapshot.child("name").getValue()), Toast.LENGTH_SHORT).show();
                         classLabel.setText(String.valueOf(postSnapshot.child("name").getValue()));
 
@@ -136,6 +145,8 @@ public class ActiveClassActivity extends AppCompatActivity {
                             Toast.makeText(ActiveClassActivity.this, "Error in adding the student", Toast.LENGTH_SHORT).show();
                     }
                 });
+
+
 
 
 
