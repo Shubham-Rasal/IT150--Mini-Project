@@ -3,7 +3,6 @@ package com.example.attendanceapp;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +11,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -20,7 +20,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -34,7 +33,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 
 public class TeacherActivity extends AppCompatActivity {
     private TextView classDate;
@@ -43,12 +42,13 @@ public class TeacherActivity extends AppCompatActivity {
     private Button StartNewClassButton;
 
     private FirebaseDatabase firebaseDatabase;
-    private DatabaseReference databaseReference;
+    private DatabaseReference classRef;
 //    private int totalNumber=80;
 
 
     private ListView listView;
     private ListView presentStudents;
+    private HashSet<String> pStudents;
     private ArrayList<String> className;
     private ArrayList<String> storeCorrespondingKeys;
 
@@ -74,7 +74,7 @@ public class TeacherActivity extends AppCompatActivity {
                                 public void onClick(View view) {
                                     cardView.setVisibility(View.GONE);
                                     StartNewClassButton.setVisibility(View.VISIBLE);
-                                    databaseReference.child(id).child("active").setValue("0");
+                                    classRef.child(id).child("active").setValue("0");
 
                                 }
                             });
@@ -97,18 +97,21 @@ public class TeacherActivity extends AppCompatActivity {
         listView = findViewById(R.id.listView1);
 
         firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference("Classes");
+        classRef = firebaseDatabase.getReference("Classes");
         className=new ArrayList<>();
+
+
         storeCorrespondingKeys=new ArrayList<>();
 //        MyAdapter myAdapter = new MyAdapter(TeacherActivity.this, R.layout.cardview, className);
 
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        classRef.addValueEventListener(new ValueEventListener() {
 
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot classSnapshot : snapshot.getChildren()) {
                     Class c = classSnapshot.getValue(Class.class);
-                    if ((c.getActive()).equals("0")) {
+                    assert c != null;
+                    if ((c.getActive()).equals("1")) {
                         if(!storeCorrespondingKeys.contains(classSnapshot.getKey())) {
                             className.add(c.getName());
                         }
@@ -168,14 +171,38 @@ public class TeacherActivity extends AppCompatActivity {
         presentStudents = (ListView) popupView.findViewById(R.id.present_list);
 
         //Array adapter for student list
-        String temp[] = {"this","us","kfjldkjglf"};
-        ArrayAdapter studentAdapter = new ArrayAdapter(this, android.R.layout.simple_selectable_list_item,temp);
-        presentStudents.setAdapter(studentAdapter);
+        String temp[] = {"dhfkjd","Shubham","Abhishek"};
+
+
 
 
         popupText.setText("title");
 
-        Toast.makeText(this, ""+snapshot, Toast.LENGTH_SHORT).show();
+        //Getting present students
+        Query pQuery = classRef.orderByChild("active").equalTo("1");
+        ValueEventListener studentListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot studensSnap : snapshot.getChildren())
+                {
+                    Toast.makeText(TeacherActivity.this,"from here"+studensSnap.child("students_present"), Toast.LENGTH_LONG).show();
+
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+
+        pQuery.addValueEventListener(studentListener);
+        ArrayAdapter studentAdapter = new ArrayAdapter(this, android.R.layout.simple_selectable_list_item,);
+        presentStudents.setAdapter(studentAdapter);
+
+
 
 
         // dismiss the popup window when touched

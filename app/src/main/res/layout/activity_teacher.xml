@@ -12,13 +12,13 @@
         android:id="@+id/textView3"
         android:layout_width="337dp"
         android:layout_height="50dp"
+        android:layout_marginBottom="212dp"
         android:text="Active Classes"
         android:textSize="28dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.607" />
+        app:layout_constraintHorizontal_bias="0.513"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/class_label"
@@ -44,7 +44,7 @@
         app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.748">
+        app:layout_constraintVertical_bias="0.833">
 
         <TextView
             android:id="@+id/ClassDate"

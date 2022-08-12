@@ -1,6 +1,7 @@
 package com.example.attendanceapp;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Class implements Serializable {
     private String name;
@@ -38,6 +39,12 @@ public class Class implements Serializable {
         this.name = name;
     }
 
+
+
+
+
+
+
     public void setBegin(String begin) {
         this.begin = begin;
     }
@@ -58,5 +65,7 @@ public class Class implements Serializable {
         this.end = end;
         this.date=date;
         this.active=active;
+
+
     }
 }
