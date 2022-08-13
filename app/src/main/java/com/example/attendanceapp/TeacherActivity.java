@@ -11,7 +11,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.renderscript.Sampler;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -26,8 +25,6 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -37,7 +34,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 
 public class TeacherActivity extends AppCompatActivity {
     private TextView classDate;
@@ -175,6 +171,7 @@ public class TeacherActivity extends AppCompatActivity {
 
         //Array adapter for student list
         String temp[] = {"dhfkjd","Shubham","Abhishek"};
+        ArrayList<String> pStudents;
 
 
 
@@ -188,12 +185,17 @@ public class TeacherActivity extends AppCompatActivity {
         ValueEventListener ps = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Toast.makeText(TeacherActivity.this, "Present:"+snapshot, Toast.LENGTH_SHORT).show();
-                Log.i("present",String.valueOf(snapshot.getValue()));
+                for(DataSnapshot ps: snapshot.getChildren()){
+
+                    Log.i("ps",String.valueOf(ps.child("students_present").getValue()));
+
+
+                }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("Errror",String.valueOf(error));
 
             }
         };

@@ -40,6 +40,7 @@ public class ActiveClassActivity extends AppCompatActivity {
 
 
 
+
     //auth
     FirebaseAuth userAuth = FirebaseAuth.getInstance();
     FirebaseUser currentUser = userAuth.getCurrentUser();
@@ -113,33 +114,36 @@ public class ActiveClassActivity extends AppCompatActivity {
 
                 String email = currentUser.getEmail();
                 String id = currentUser.getUid();
-                testRef.child(id).child("name").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+
+                testRef.child(id).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DataSnapshot> task) {
 
                         if (!task.isSuccessful()) {
                             Log.e("firebase", "Error getting data", task.getException());
-                            String name = String.valueOf(task.getResult().getValue());
+
 
                         } else {
-                            Log.d("firebase", String.valueOf(task.getResult().getValue()));
-                            Toast.makeText(ActiveClassActivity.this, String.valueOf(task.getResult().getValue()), Toast.LENGTH_SHORT).show();
+                            Log.d("firebase", String.valueOf(task.getResult().child("name").getValue()));
+                            //adding student to class object
+                            String name =  String.valueOf(task.getResult().child("name").getValue());
+                            activeclassRef.child("students_present").child(currentUser.getUid()).setValue(name)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if(task.isSuccessful())
+                                                Toast.makeText(ActiveClassActivity.this, "Added student successfully", Toast.LENGTH_SHORT).show();
+                                            else
+                                                Toast.makeText(ActiveClassActivity.this, "Error in adding the student", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
                         }
                     }
                 });
 
-                //adding student to class object
 
-                activeclassRef.child("students_present").push().setValue(currentUser.getUid())
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isSuccessful())
-                            Toast.makeText(ActiveClassActivity.this, "Added student successfully", Toast.LENGTH_SHORT).show();
-                        else
-                            Toast.makeText(ActiveClassActivity.this, "Error in adding the student", Toast.LENGTH_SHORT).show();
-                    }
-                });
+
+
 
 
 
