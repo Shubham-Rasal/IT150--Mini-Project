@@ -11,6 +11,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.renderscript.Sampler;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -25,6 +26,8 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -34,6 +37,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 public class TeacherActivity extends AppCompatActivity {
     private TextView classDate;
@@ -122,8 +126,7 @@ public class TeacherActivity extends AppCompatActivity {
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Toast.makeText(TeacherActivity.this, ""+id, Toast.LENGTH_SHORT).show();
-                        onButtonShowPopupWindowClick(view,snapshot);
+                        onButtonShowPopupWindowClick(view,parent.getItemAtPosition(position));
                     }
                 });
                 listView.setAdapter(myAdapter);
@@ -148,7 +151,7 @@ public class TeacherActivity extends AppCompatActivity {
 
     }
 
-    public void onButtonShowPopupWindowClick(View view,DataSnapshot snapshot) {
+    public void onButtonShowPopupWindowClick(View view, Object itemAtPosition) {
 
         // inflate the layout of the popup window
         LayoutInflater inflater = (LayoutInflater)
@@ -178,18 +181,15 @@ public class TeacherActivity extends AppCompatActivity {
 
         popupText.setText("title");
 
+
         //Getting present students
-        Query pQuery = classRef.orderByChild("active").equalTo("1");
-        ValueEventListener studentListener = new ValueEventListener() {
+        DatabaseReference pClassRef = classRef.child("");
+        Query pQuery = pClassRef.orderByChild("name").equalTo(String.valueOf(itemAtPosition));
+        ValueEventListener ps = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot studensSnap : snapshot.getChildren())
-                {
-                    Toast.makeText(TeacherActivity.this,"from here"+studensSnap.child("students_present"), Toast.LENGTH_LONG).show();
-
-
-                }
-
+                Toast.makeText(TeacherActivity.this, "Present:"+snapshot, Toast.LENGTH_SHORT).show();
+                Log.i("present",String.valueOf(snapshot.getValue()));
             }
 
             @Override
@@ -197,9 +197,11 @@ public class TeacherActivity extends AppCompatActivity {
 
             }
         };
+        pQuery.addListenerForSingleValueEvent(ps);
 
-        pQuery.addValueEventListener(studentListener);
-        ArrayAdapter studentAdapter = new ArrayAdapter(this, android.R.layout.simple_selectable_list_item,);
+
+
+        ArrayAdapter studentAdapter = new ArrayAdapter(this, android.R.layout.simple_selectable_list_item,temp);
         presentStudents.setAdapter(studentAdapter);
 
 
