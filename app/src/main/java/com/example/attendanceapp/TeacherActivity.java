@@ -171,7 +171,7 @@ public class TeacherActivity extends AppCompatActivity {
 
         //Array adapter for student list
         String temp[] = {"dhfkjd","Shubham","Abhishek"};
-        ArrayList<String> pStudents;
+        ArrayList<String> pStudents = new ArrayList<>();
 
 
 
@@ -185,12 +185,25 @@ public class TeacherActivity extends AppCompatActivity {
         ValueEventListener ps = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot ps: snapshot.getChildren()){
-
-                    Log.i("ps",String.valueOf(ps.child("students_present").getValue()));
-
+                DataSnapshot PresentStudents = null;
+                for(DataSnapshot ps: snapshot.getChildren()){                 
+                                       
+                    Log.d("pstude",String.valueOf(ps));
+                    PresentStudents =ps.child("students_present");
+                    break;
 
                 }
+                
+                Log.d("Reprent",String.valueOf(PresentStudents.getValue()));
+                for (DataSnapshot d : PresentStudents.getChildren()){
+                    pStudents.add(String.valueOf(d.getValue()));
+
+                    Toast.makeText(TeacherActivity.this, ""+d.getValue(), Toast.LENGTH_SHORT).show();
+                }
+
+                ArrayAdapter studentAdapter = new ArrayAdapter(TeacherActivity.this, android.R.layout.simple_selectable_list_item,pStudents);
+                presentStudents.setAdapter(studentAdapter);
+
             }
 
             @Override
@@ -203,8 +216,7 @@ public class TeacherActivity extends AppCompatActivity {
 
 
 
-        ArrayAdapter studentAdapter = new ArrayAdapter(this, android.R.layout.simple_selectable_list_item,temp);
-        presentStudents.setAdapter(studentAdapter);
+
 
 
 

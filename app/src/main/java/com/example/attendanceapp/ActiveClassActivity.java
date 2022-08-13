@@ -46,10 +46,6 @@ public class ActiveClassActivity extends AppCompatActivity {
     FirebaseUser currentUser = userAuth.getCurrentUser();
 
 
-
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,6 +108,15 @@ public class ActiveClassActivity extends AppCompatActivity {
                                 "Authentication error: " + errString, Toast.LENGTH_SHORT)
                         .show();
 
+            }
+
+            @Override
+            public void onAuthenticationSucceeded(
+                    @NonNull BiometricPrompt.AuthenticationResult result) {
+                super.onAuthenticationSucceeded(result);
+                Toast.makeText(getApplicationContext(),
+                        "Authentication succeeded!", Toast.LENGTH_SHORT).show();
+                authenticate.setVisibility(View.GONE);
                 String email = currentUser.getEmail();
                 String id = currentUser.getUid();
 
@@ -124,7 +129,6 @@ public class ActiveClassActivity extends AppCompatActivity {
 
 
                         } else {
-                            Log.d("firebase", String.valueOf(task.getResult().child("name").getValue()));
                             //adding student to class object
                             String name =  String.valueOf(task.getResult().child("name").getValue());
                             activeclassRef.child("students_present").child(currentUser.getUid()).setValue(name)
@@ -140,25 +144,6 @@ public class ActiveClassActivity extends AppCompatActivity {
                         }
                     }
                 });
-
-
-
-
-
-
-
-
-
-
-            }
-
-            @Override
-            public void onAuthenticationSucceeded(
-                    @NonNull BiometricPrompt.AuthenticationResult result) {
-                super.onAuthenticationSucceeded(result);
-                Toast.makeText(getApplicationContext(),
-                        "Authentication succeeded!", Toast.LENGTH_SHORT).show();
-                authenticate.setVisibility(View.GONE);
 
 
             }
