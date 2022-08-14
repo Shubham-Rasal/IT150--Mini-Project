@@ -33,7 +33,6 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.HashSet;
 
 public class TeacherActivity extends AppCompatActivity {
@@ -123,8 +122,7 @@ public class TeacherActivity extends AppCompatActivity {
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Toast.makeText(TeacherActivity.this, ""+id, Toast.LENGTH_SHORT).show();
-                        onButtonShowPopupWindowClick(view,snapshot);
+                        onButtonShowPopupWindowClick(view,parent.getItemAtPosition(position));
                     }
                 });
                 listView.setAdapter(myAdapter);
@@ -149,7 +147,7 @@ public class TeacherActivity extends AppCompatActivity {
 
     }
 
-    public void onButtonShowPopupWindowClick(View view,DataSnapshot snapshot) {
+    public void onButtonShowPopupWindowClick(View view, Object itemAtPosition) {
 
         // inflate the layout of the popup window
         LayoutInflater inflater = (LayoutInflater)
@@ -172,43 +170,52 @@ public class TeacherActivity extends AppCompatActivity {
         presentStudents = (ListView) popupView.findViewById(R.id.present_list);
 
         //Array adapter for student list
-
-        String temp[] = {"this","us","kfjldkjglf"};
-        ArrayAdapter studentAdapter = new ArrayAdapter(this, android.R.layout.simple_selectable_list_item,temp);
-        presentStudents.setAdapter(studentAdapter);
-
-
-        popupText.setText("title");
-
-        Toast.makeText(this, ""+snapshot, Toast.LENGTH_SHORT).show();
-        String tem[] = {"dhfkjd","Shubham","Abhishek"};
+        String temp[] = {"dhfkjd","Shubham","Abhishek"};
+        ArrayList<String> pStudents = new ArrayList<>();
 
 
 
 
         popupText.setText("title");
+
 
         //Getting present students
-        Query pQuery = classRef.orderByChild("active").equalTo("1");
-        ValueEventListener studentListener = new ValueEventListener() {
+        DatabaseReference pClassRef = classRef.child("");
+        Query pQuery = pClassRef.orderByChild("name").equalTo(String.valueOf(itemAtPosition));
+        ValueEventListener ps = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot studensSnap : snapshot.getChildren())
-                {
-                    Toast.makeText(TeacherActivity.this,"from here"+studensSnap.child("students_present"), Toast.LENGTH_LONG).show();
-
+                DataSnapshot PresentStudents = null;
+                for(DataSnapshot ps: snapshot.getChildren()){                 
+                                       
+                    Log.d("pstude",String.valueOf(ps));
+                    PresentStudents =ps.child("students_present");
+                    break;
 
                 }
+                
+                Log.d("Reprent",String.valueOf(PresentStudents.getValue()));
+                for (DataSnapshot d : PresentStudents.getChildren()){
+                    pStudents.add(String.valueOf(d.getValue()));
+
+                    Toast.makeText(TeacherActivity.this, ""+d.getValue(), Toast.LENGTH_SHORT).show();
+                }
+
+                ArrayAdapter studentAdapter = new ArrayAdapter(TeacherActivity.this, android.R.layout.simple_selectable_list_item,pStudents);
+                presentStudents.setAdapter(studentAdapter);
 
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("Errror",String.valueOf(error));
 
             }
         };
+        pQuery.addListenerForSingleValueEvent(ps);
 
-        pQuery.addValueEventListener(studentListener);
+
+
 
 
 
