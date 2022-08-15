@@ -170,13 +170,12 @@ public class TeacherActivity extends AppCompatActivity {
         presentStudents = (ListView) popupView.findViewById(R.id.present_list);
 
         //Array adapter for student list
-        String temp[] = {"dhfkjd","Shubham","Abhishek"};
         ArrayList<String> pStudents = new ArrayList<>();
 
 
 
 
-        popupText.setText("title");
+        popupText.setText(String.valueOf(itemAtPosition));
 
 
         //Getting present students
