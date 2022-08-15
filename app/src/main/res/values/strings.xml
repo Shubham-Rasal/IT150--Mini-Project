@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">Do Attend</string>
     <string name="login">Login</string>
+    <string name="register_as">Register as :</string>
+    <string-array name="planets_array">
+        <item>Student</item>
+        <item>Teacher</item>
+
+    </string-array>
 </resources>
