@@ -43,7 +43,7 @@ public class TeacherActivity extends AppCompatActivity {
 
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference classRef;
-//    private int totalNumber=80;
+    private int totalNumber=80;
 
 
     private ListView listView;
@@ -102,7 +102,6 @@ public class TeacherActivity extends AppCompatActivity {
 
 
         storeCorrespondingKeys=new ArrayList<>();
-//        MyAdapter myAdapter = new MyAdapter(TeacherActivity.this, R.layout.cardview, className);
 
         classRef.addValueEventListener(new ValueEventListener() {
 

@@ -99,7 +99,6 @@ public class ActiveClassActivity extends AppCompatActivity {
 
         query.addValueEventListener(valueEventListener);
 
-
         //Adding biometrics auth
         Executor executor = ContextCompat.getMainExecutor(this);
         BiometricPrompt biometricPrompt = new BiometricPrompt(ActiveClassActivity.this,
@@ -135,13 +134,35 @@ public class ActiveClassActivity extends AppCompatActivity {
 
                         } else {
                             //adding student to class object
+//                            activeclassRef.child("presentStudent").child(currentUser.getUid());
+                            String un=currentUser.getUid();
+                            Toast.makeText(ActiveClassActivity.this, un, Toast.LENGTH_SHORT).show();
                             String name =  String.valueOf(task.getResult().child("name").getValue());
-                            activeclassRef.child("students_present").child(currentUser.getUid()).setValue(name)
+//                            testRef.child(currentUser.getUid()).child("numberOfClasses").setValue();
+                            testRef.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    for(DataSnapshot dataSnapshot:snapshot.getChildren()){
+                                        if(dataSnapshot.getKey()==currentUser.getUid()) {
+                                            dataSnapshot.getRef().child("numberOfClasses").setValue(Integer.parseInt(String.valueOf(dataSnapshot.child("numberOfClasses").getValue())) + 1);
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+                            activeclassRef.child("presentStudent").setValue(Integer.parseInt(String.valueOf(activeClass.child("presentStudent").getValue()))+1)
                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
-                                            if(task.isSuccessful())
+                                            if(task.isSuccessful()) {
                                                 Toast.makeText(ActiveClassActivity.this, "Added student successfully", Toast.LENGTH_SHORT).show();
+                                                finish();
+                                            }
+
                                             else
                                                 Toast.makeText(ActiveClassActivity.this, "Error in adding the student", Toast.LENGTH_SHORT).show();
                                         }
