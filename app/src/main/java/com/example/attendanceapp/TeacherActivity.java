@@ -75,7 +75,38 @@ public class TeacherActivity extends AppCompatActivity {
                                 public void onClick(View view) {
                                     cardView.setVisibility(View.GONE);
                                     StartNewClassButton.setVisibility(View.VISIBLE);
-                                    classRef.child(id).child("active").setValue("0");
+                                    classRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            Toast.makeText(TeacherActivity.this, "hmm", Toast.LENGTH_SHORT).show();
+                                            for(DataSnapshot ds:snapshot.getChildren()){
+//                                                Toast.makeText(TeacherActivity.this,"yeah: "+String.valueOf(ds.child("active").getValue()), Toast.LENGTH_SHORT).show();
+                                                if(String.valueOf(ds.child("active").getValue()).equals("1")){
+                                                    Toast.makeText(TeacherActivity.this, "step2", Toast.LENGTH_SHORT).show();
+                                                    int c=0;
+//                                                    (ds.child("PresentStudents").getChildren()).size();
+//                                                    Toast.makeText(TeacherActivity.this, ds.child("PresentStudents"), Toast.LENGTH_SHORT).show();
+                                                    for(DataSnapshot i:ds.child("PresentStudents").getChildren()){
+//                                                        Toast.makeText(TeacherActivity.this, "c=: "+c, Toast.LENGTH_SHORT).show();
+                                                        c++;
+//                                                        Toast.makeText(TeacherActivity.this, String.valueOf(i.getValue()), Toast.LENGTH_SHORT).show();
+
+                                                    }
+//                                                    Toast.makeText(TeacherActivity.this, "Count: "+c, Toast.LENGTH_SHORT).show();
+                                                    ds.getRef().child("presentStudent").setValue(String.valueOf(c));
+                                                }
+                                            }
+                                            Toast.makeText(TeacherActivity.this, "Wait", Toast.LENGTH_SHORT).show();
+                                            classRef.child(id).child("active").setValue("0");
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+                                            Toast.makeText(TeacherActivity.this, "Error!!", Toast.LENGTH_SHORT).show();
+
+                                        }
+                                    });
+
 
                                 }
                             });
@@ -121,14 +152,19 @@ public class TeacherActivity extends AppCompatActivity {
                         storeCorrespondingKeys.add(classSnapshot.getKey());
                     }
                 }
-                MyAdapter myAdapter = new MyAdapter(TeacherActivity.this, R.layout.cardview, className,date,presentStudentsCount);
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        onButtonShowPopupWindowClick(view,parent.getItemAtPosition(position));
-                    }
-                });
-                listView.setAdapter(myAdapter);
+                if(storeCorrespondingKeys.size()!=0) {
+//                    Toast.makeText(TeacherActivity.this, "First", Toast.LENGTH_SHORT).show();
+                    MyAdapter myAdapter = new MyAdapter(TeacherActivity.this, R.layout.cardview, className, date, presentStudentsCount);
+                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            onButtonShowPopupWindowClick(view, parent.getItemAtPosition(position));
+                        }
+                    });
+                    listView.setAdapter(myAdapter);
+                }
+//                else
+//                    Toast.makeText(TeacherActivity.this, "No classes", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -191,8 +227,8 @@ public class TeacherActivity extends AppCompatActivity {
                 for(DataSnapshot ps: snapshot.getChildren()){
 
                     Log.d("pstude",String.valueOf(ps));
-                    PresentStudents =ps.child("students_present");
-                    break;
+                    PresentStudents =ps.child("PresentStudents");
+//                    break;
 
                 }
 
@@ -210,7 +246,7 @@ public class TeacherActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.e("Errror",String.valueOf(error));
+                Log.e("Error",String.valueOf(error));
 
             }
         };
@@ -231,5 +267,13 @@ public class TeacherActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+    }
+    @Override
+    public void onBackPressed(){
+        Intent startMain = new Intent(Intent.ACTION_MAIN);
+        startMain.addCategory(Intent.CATEGORY_HOME);
+        startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(startMain);
     }
 }
