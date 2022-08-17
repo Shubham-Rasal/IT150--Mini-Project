@@ -63,6 +63,7 @@ public class ActiveClassActivity extends AppCompatActivity {
         Query query = classRef.orderByChild("active").equalTo("1");
 
 
+
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -135,15 +136,16 @@ public class ActiveClassActivity extends AppCompatActivity {
                         } else {
                             //adding student to class object
 //                            activeclassRef.child("presentStudent").child(currentUser.getUid());
-                            String un=currentUser.getUid();
-                            Toast.makeText(ActiveClassActivity.this, un, Toast.LENGTH_SHORT).show();
+                            Query query2=testRef.orderByKey().equalTo(currentUser.getUid());
+//                            Toast.makeText(ActiveClassActivity.this, un, Toast.LENGTH_SHORT).show();
                             String name =  String.valueOf(task.getResult().child("name").getValue());
 //                            testRef.child(currentUser.getUid()).child("numberOfClasses").setValue();
-                            testRef.addValueEventListener(new ValueEventListener() {
+                            testRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                                     for(DataSnapshot dataSnapshot:snapshot.getChildren()){
                                         if(dataSnapshot.getKey()==currentUser.getUid()) {
+                                            Toast.makeText(ActiveClassActivity.this, "hey", Toast.LENGTH_SHORT).show();
                                             dataSnapshot.getRef().child("numberOfClasses").setValue(Integer.parseInt(String.valueOf(dataSnapshot.child("numberOfClasses").getValue())) + 1);
                                         }
                                     }

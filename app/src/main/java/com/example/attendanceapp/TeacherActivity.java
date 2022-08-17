@@ -109,7 +109,7 @@ public class TeacherActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot classSnapshot : snapshot.getChildren()) {
                     Class c = classSnapshot.getValue(Class.class);
-                    assert c != null;
+//                    assert c != null;
                     if ((c.getActive()).equals("1")) {
                         if(!storeCorrespondingKeys.contains(classSnapshot.getKey())) {
                             className.add(c.getName());

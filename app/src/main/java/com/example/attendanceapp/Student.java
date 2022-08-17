@@ -39,6 +39,6 @@ public class Student {
         this.name = name;
         this.email = email;
         this.password = password;
-        this.numberOfClasses=numberOfClasses;
+        this.numberOfClasses="0";
     }
 }
