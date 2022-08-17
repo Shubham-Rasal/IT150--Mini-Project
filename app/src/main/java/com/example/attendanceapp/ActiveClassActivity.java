@@ -34,6 +34,7 @@ public class ActiveClassActivity extends AppCompatActivity {
     TextView classLabel;
     TextView noClass;
     FirebaseDatabase db  = FirebaseDatabase.getInstance();
+    DatabaseReference databaseReference=db.getReference();
     DatabaseReference classRef = db.getReference("Classes");
     DatabaseReference testRef = db.getReference("Students");
     DatabaseReference activeclassRef;
@@ -119,8 +120,8 @@ public class ActiveClassActivity extends AppCompatActivity {
             public void onAuthenticationSucceeded(
                     @NonNull BiometricPrompt.AuthenticationResult result) {
                 super.onAuthenticationSucceeded(result);
-                Toast.makeText(getApplicationContext(),
-                        "Authentication succeeded!", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(),
+//                        "Authentication succeeded!", Toast.LENGTH_SHORT).show();
                 authenticate.setVisibility(View.GONE);
                 String email = currentUser.getEmail();
                 String id = currentUser.getUid();
@@ -138,30 +139,45 @@ public class ActiveClassActivity extends AppCompatActivity {
 //                            activeclassRef.child("presentStudent").child(currentUser.getUid());
                             Query query2=testRef.orderByKey().equalTo(currentUser.getUid());
 //                            Toast.makeText(ActiveClassActivity.this, un, Toast.LENGTH_SHORT).show();
-                            String name =  String.valueOf(task.getResult().child("name").getValue());
-//                            testRef.child(currentUser.getUid()).child("numberOfClasses").setValue();
-                            testRef.addListenerForSingleValueEvent(new ValueEventListener() {
+//                            Toast.makeText(ActiveClassActivity.this, "yoyoyoyo", Toast.LENGTH_SHORT).show();
+                            databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                                    Toast.makeText(ActiveClassActivity.this, "heyhmm", Toast.LENGTH_SHORT).show();
                                     for(DataSnapshot dataSnapshot:snapshot.getChildren()){
-                                        if(dataSnapshot.getKey()==currentUser.getUid()) {
-                                            Toast.makeText(ActiveClassActivity.this, "hey", Toast.LENGTH_SHORT).show();
-                                            dataSnapshot.getRef().child("numberOfClasses").setValue(Integer.parseInt(String.valueOf(dataSnapshot.child("numberOfClasses").getValue())) + 1);
+//                                        Toast.makeText(ActiveClassActivity.this,dataSnapshot.getKey(), Toast.LENGTH_SHORT).show();
+                                        if(dataSnapshot.getKey().equals("Students")) {
+//                                            DataSnapshot students=dataSnapshot;
+//                                            for(DataSnapshot eachStudent:dataSnapshot.getChildren()){
+//                                                Toast.makeText(ActiveClassActivity.this, "finally", Toast.LENGTH_SHORT).show();
+//                                            }
+//                                            Toast.makeText(ActiveClassActivity.this, "step1", Toast.LENGTH_SHORT).show();
+                                            for(DataSnapshot eachStudent:dataSnapshot.getChildren()){
+                                                if((eachStudent.getKey()).equals(currentUser.getUid())){
+                                                    Toast.makeText(ActiveClassActivity.this, "hey", Toast.LENGTH_SHORT).show();
+                                                    eachStudent.getRef().child("numberOfClasses").setValue(String.valueOf(Integer.parseInt(String.valueOf(eachStudent.child("numberOfClasses").getValue())) + 1));
+                                                    break;
+                                                }
+                                            }
+
                                         }
                                     }
                                 }
 
                                 @Override
                                 public void onCancelled(@NonNull DatabaseError error) {
-
+                                    Toast.makeText(ActiveClassActivity.this, "Error!!", Toast.LENGTH_SHORT).show();
                                 }
                             });
+//                            String name =  String.valueOf(task.getResult().child("name").getValue());
+//                            testRef.child(currentUser.getUid()).child("numberOfClasses").setValue();
+
                             activeclassRef.child("presentStudent").setValue(Integer.parseInt(String.valueOf(activeClass.child("presentStudent").getValue()))+1)
                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if(task.isSuccessful()) {
-                                                Toast.makeText(ActiveClassActivity.this, "Added student successfully", Toast.LENGTH_SHORT).show();
+//                                                Toast.makeText(ActiveClassActivity.this, "Added student successfully", Toast.LENGTH_SHORT).show();
                                                 finish();
                                             }
 

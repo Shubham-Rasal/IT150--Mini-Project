@@ -43,13 +43,14 @@ public class TeacherActivity extends AppCompatActivity {
 
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference classRef;
-    private int totalNumber=80;
+    public int totalNumber=80;
 
 
     private ListView listView;
     private ListView presentStudents;
-    private HashSet<String> pStudents;
     private ArrayList<String> className;
+    private ArrayList<String> date=new ArrayList<String>();
+    private ArrayList<String> presentStudentsCount=new ArrayList<String>();
     private ArrayList<String> storeCorrespondingKeys;
 
 
@@ -102,6 +103,7 @@ public class TeacherActivity extends AppCompatActivity {
 
 
         storeCorrespondingKeys=new ArrayList<>();
+//        MyAdapter myAdapter = new MyAdapter(TeacherActivity.this, R.layout.cardview, className);
 
         classRef.addValueEventListener(new ValueEventListener() {
 
@@ -109,15 +111,17 @@ public class TeacherActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot classSnapshot : snapshot.getChildren()) {
                     Class c = classSnapshot.getValue(Class.class);
-//                    assert c != null;
-                    if ((c.getActive()).equals("1")) {
+                    assert c != null;
+                    if ((c.getActive()).equals("0")) {
                         if(!storeCorrespondingKeys.contains(classSnapshot.getKey())) {
                             className.add(c.getName());
+                            date.add(c.getDate());
+                            presentStudentsCount.add(c.getPresentStudent());
                         }
-                    storeCorrespondingKeys.add(classSnapshot.getKey());
+                        storeCorrespondingKeys.add(classSnapshot.getKey());
                     }
                 }
-                MyAdapter myAdapter = new MyAdapter(TeacherActivity.this, R.layout.cardview, className);
+                MyAdapter myAdapter = new MyAdapter(TeacherActivity.this, R.layout.cardview, className,date,presentStudentsCount);
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -184,14 +188,14 @@ public class TeacherActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 DataSnapshot PresentStudents = null;
-                for(DataSnapshot ps: snapshot.getChildren()){                 
-                                       
+                for(DataSnapshot ps: snapshot.getChildren()){
+
                     Log.d("pstude",String.valueOf(ps));
                     PresentStudents =ps.child("students_present");
                     break;
 
                 }
-                
+
                 Log.d("Reprent",String.valueOf(PresentStudents.getValue()));
                 for (DataSnapshot d : PresentStudents.getChildren()){
                     pStudents.add(String.valueOf(d.getValue()));
