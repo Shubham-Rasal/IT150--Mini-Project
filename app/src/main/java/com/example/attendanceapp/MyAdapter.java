@@ -27,12 +27,22 @@ public class MyAdapter extends ArrayAdapter {
     @NonNull
     @Override
     public String getItem(int position){
-        return arr.get(position)+"       "+Date.get(position);
+        return arr.get(position);
     }
+
+
+    @NonNull
+    public String getDate(int position){
+        return Date.get(position);
+    }
+
+
+
     @NonNull
     public String getNumberOfPresentStudents(int position){
         return presentStudentCount.get(position);
     }
+
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent){

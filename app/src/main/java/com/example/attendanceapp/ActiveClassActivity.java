@@ -128,7 +128,7 @@ public class ActiveClassActivity extends AppCompatActivity {
 
                 if(!pushedStudents.contains(email)) {
                     DatabaseReference s = classRef.child(activeclassRef.getKey()).child("PresentStudents");
-                    s.push().setValue(email);
+                    s.child(id).setValue(email);
                     pushedStudents.add(email);
                 }
 

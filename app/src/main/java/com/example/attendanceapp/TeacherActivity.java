@@ -49,6 +49,7 @@ public class TeacherActivity extends AppCompatActivity {
     private ListView listView;
     private ListView presentStudents;
     private ArrayList<String> className;
+    private HashSet<String> pStudents;
     private ArrayList<String> date=new ArrayList<String>();
     private ArrayList<String> presentStudentsCount=new ArrayList<String>();
     private ArrayList<String> storeCorrespondingKeys;
@@ -186,7 +187,7 @@ public class TeacherActivity extends AppCompatActivity {
 
     }
 
-    public void onButtonShowPopupWindowClick(View view, Object itemAtPosition) {
+    public void onButtonShowPopupWindowClick(View view, Object item) {
 
         // inflate the layout of the popup window
         LayoutInflater inflater = (LayoutInflater)
@@ -214,12 +215,13 @@ public class TeacherActivity extends AppCompatActivity {
 
 
 
-        popupText.setText(String.valueOf(itemAtPosition));
+        popupText.setText(String.valueOf(item));
+        Toast.makeText(this, "title"+String.valueOf(item), Toast.LENGTH_SHORT).show();
 
 
         //Getting present students
         DatabaseReference pClassRef = classRef.child("");
-        Query pQuery = pClassRef.orderByChild("name").equalTo(String.valueOf(itemAtPosition));
+        Query pQuery = pClassRef.orderByChild("name").equalTo(String.valueOf(item));
         ValueEventListener ps = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -228,7 +230,7 @@ public class TeacherActivity extends AppCompatActivity {
 
                     Log.d("pstude",String.valueOf(ps));
                     PresentStudents =ps.child("PresentStudents");
-//                    break;
+                    break;
 
                 }
 
