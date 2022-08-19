@@ -47,9 +47,11 @@ public class MyAdapter extends ArrayAdapter {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent){
         View view= LayoutInflater.from(getContext()).inflate(R.layout.cardview,parent,false);
-        TextView classDate=view.findViewById(R.id.classDate);
+        TextView className=view.findViewById(R.id.className);
         TextView fractionOfStudents=view.findViewById(R.id.fractionOfStudents);
-        classDate.setText(getItem(position));
+        TextView classDate=view.findViewById(R.id.classDate);
+        className.setText(getItem(position));
+        classDate.setText(getDate(position));
         fractionOfStudents.setText(getNumberOfPresentStudents(position)+"/"+80);
 
 
