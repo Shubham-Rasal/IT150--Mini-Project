@@ -64,5 +64,17 @@
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <TextView
+        android:id="@+id/distance"
+        android:layout_width="181dp"
+        android:layout_height="67dp"
+        android:layout_marginTop="66dp"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
+        app:layout_constraintVertical_bias="0.415" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

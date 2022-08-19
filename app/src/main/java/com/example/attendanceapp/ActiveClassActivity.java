@@ -1,5 +1,12 @@
 package com.example.attendanceapp;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.IntentSender;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,10 +17,19 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.biometric.BiometricPrompt;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 
-import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.common.api.ResolvableApiException;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.location.Priority;
+import com.google.android.gms.location.SettingsClient;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -25,22 +41,26 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Executor;
 
-public class ActiveClassActivity extends AppCompatActivity {
+public class ActiveClassActivity extends AppCompatActivity implements LocationListener {
 
 
-    Button authenticate ;
+    Button authenticate;
     TextView classLabel;
     TextView noClass;
-    FirebaseDatabase db  = FirebaseDatabase.getInstance();
-    DatabaseReference databaseReference=db.getReference();
+    TextView disText;
+    boolean GpsStatus =false;
+
+    FirebaseDatabase db = FirebaseDatabase.getInstance();
+    DatabaseReference databaseReference = db.getReference();
     DatabaseReference classRef = db.getReference("Classes");
     DatabaseReference testRef = db.getReference("Students");
     DatabaseReference activeclassRef;
     DataSnapshot activeClass;
 
-    ArrayList<String> pushedStudents=new ArrayList<String>();
+    ArrayList<String> pushedStudents = new ArrayList<String>();
 
 
     //auth
@@ -53,12 +73,24 @@ public class ActiveClassActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_active_class);
         authenticate = (Button) findViewById(R.id.authenticate);
-        classLabel = (TextView)findViewById(R.id.class_label);
+        classLabel = (TextView) findViewById(R.id.class_label);
         noClass = (TextView) findViewById(R.id.no_class);
+        disText = (TextView) findViewById(R.id.distance);
         authenticate.setVisibility(View.GONE);
         classLabel.setVisibility(View.GONE);
 
+        //adding location manager
+        LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            ActivityCompat.requestPermissions(ActiveClassActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 100);
+
+            return;
+        }
+
+        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
         //getting active classes
 
         Query query = classRef.orderByChild("active").equalTo("1");
@@ -73,9 +105,7 @@ public class ActiveClassActivity extends AppCompatActivity {
 
                 }
                 else {
-                    authenticate.setVisibility(View.VISIBLE);
-                    classLabel.setVisibility(View.VISIBLE);
-                    noClass.setVisibility(View.GONE);
+                    noClass.setText("Not within the radius of active class");
 
 
                     Log.d("Active classes", String.valueOf(dataSnapshot));
@@ -135,90 +165,6 @@ public class ActiveClassActivity extends AppCompatActivity {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//                activeclassRef.child("presentStudent").setValue(Integer.parseInt(String.valueOf(activeClass.child("presentStudent").getValue()))+1)
-//                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-//                            @Override
-//                            public void onComplete(@NonNull Task<Void> task) {
-//                                if(task.isSuccessful()) {
-////                                                Toast.makeText(ActiveClassActivity.this, "Added student successfully", Toast.LENGTH_SHORT).show();
-//                                    finish();
-//                                }
-//
-//                                else
-//                                    Toast.makeText(ActiveClassActivity.this, "Error in adding the student", Toast.LENGTH_SHORT).show();
-//                            }
-//                        });
-
-//                databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-////                                    Toast.makeText(ActiveClassActivity.this, "heyhmm", Toast.LENGTH_SHORT).show();
-//                        for(DataSnapshot dataSnapshot:snapshot.getChildren()){
-////                                        Toast.makeText(ActiveClassActivity.this,dataSnapshot.getKey(), Toast.LENGTH_SHORT).show();
-//                            if(dataSnapshot.getKey().equals("Students")) {
-//                                for(DataSnapshot eachStudent:dataSnapshot.getChildren()){
-//                                    if((eachStudent.getKey()).equals(currentUser.getUid())){
-//                                        Toast.makeText(ActiveClassActivity.this, "hey", Toast.LENGTH_SHORT).show();
-////                                        eachStudent.getRef().child("numberOfClasses").setValue(String.valueOf(Integer.parseInt(String.valueOf(eachStudent.child("numberOfClasses").getValue())) + 1));
-//                                        break;
-//                                    }
-//                                }
-//
-//                            }
-//                        }
-//                    }
-
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError error) {
-//                        Toast.makeText(ActiveClassActivity.this, "Error!!", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-
-
-
-
-
-
-//                testRef.child(id).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-//
-//                        if (!task.isSuccessful()) {
-//                            Log.e("firebase", "Error getting data", task.getException());
-//
-//
-//                        } else {
-//                            //adding student to class object
-////                            activeclassRef.child("presentStudent").child(currentUser.getUid());
-////                            Query query2=testRef.orderByKey().equalTo(currentUser.getUid());
-////                            Toast.makeText(ActiveClassActivity.this, un, Toast.LENGTH_SHORT).show();
-////                            Toast.makeText(ActiveClassActivity.this, "yoyoyoyo", Toast.LENGTH_SHORT).show();
-//
-////                            String name =  String.valueOf(task.getResult().child("name").getValue());
-////                            testRef.child(currentUser.getUid()).child("numberOfClasses").setValue();
-//
-//
-//                        }
-//                    }
-//                });
-
-
             }
 
             @Override
@@ -246,6 +192,9 @@ public class ActiveClassActivity extends AppCompatActivity {
 
 
     }
+
+
+
     @Override
     public void onStart() {
         super.onStart();
@@ -256,4 +205,93 @@ public class ActiveClassActivity extends AppCompatActivity {
 
         }
     }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        ArrayList<String> permissionsToRequest = new ArrayList<>();
+        for (int i = 0; i < grantResults.length; i++) {
+            permissionsToRequest.add(permissions[i]);
+        }
+        if (permissionsToRequest.size() > 0) {
+            int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
+            ActivityCompat.requestPermissions(
+                    this,
+                    permissionsToRequest.toArray(new String[0]),
+                    REQUEST_PERMISSIONS_REQUEST_CODE);
+        }
+    }
+
+
+    @Override
+    public void onLocationChanged(@NonNull Location location) {
+        double Lat= location.getLatitude();
+        double Long = location.getLongitude();
+        //13.007897281772347, 74.79728887438183
+        //13.007859, 74.796000
+        double dis = distance(13.008100, 74.795979,Lat,Long);
+        disText.setText(String.valueOf(dis));
+        Log.i("distance",String.valueOf(dis));
+        if(dis<5){
+            authenticate.setVisibility(View.VISIBLE);
+            classLabel.setVisibility(View.VISIBLE);
+            noClass.setVisibility(View.GONE);
+        }
+
+
+    }
+
+    @Override
+    public void onLocationChanged(@NonNull List<Location> locations) {
+        LocationListener.super.onLocationChanged(locations);
+    }
+
+    @Override
+    public void onFlushComplete(int requestCode) {
+        LocationListener.super.onFlushComplete(requestCode);
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+        LocationListener.super.onStatusChanged(provider, status, extras);
+    }
+
+    @Override
+    public void onProviderEnabled(@NonNull String provider) {
+        LocationListener.super.onProviderEnabled(provider);
+        Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onProviderDisabled(@NonNull String provider) {
+        LocationListener.super.onProviderDisabled(provider);
+    }
+
+    private double distance(double lat1, double lon1, double lat2, double lon2) {
+        double theta = lon1 - lon2;
+        double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
+        dist = Math.acos(dist);
+        dist = rad2deg(dist);
+        dist = dist * 60 * 1.1515;
+        dist = dist * 1.609344;
+
+        return (dist*1000-3);
+    }
+
+    /*:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+    /*::  This function converts decimal degrees to radians             :*/
+    /*:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+    private double deg2rad(double deg) {
+        return (deg * Math.PI / 180.0);
+    }
+
+    /*:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+    /*::  This function converts radians to decimal degrees             :*/
+    /*:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+    private double rad2deg(double rad) {
+        return (rad * 180.0 / Math.PI);
+    }
+
+
+
+
 }
