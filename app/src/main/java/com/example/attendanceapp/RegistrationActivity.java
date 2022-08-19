@@ -68,10 +68,10 @@ public class RegistrationActivity extends AppCompatActivity implements AdapterVi
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
 
-                                            Student s = new Student(NAME, EMAIL, PASSWORD);
+                                            Student s = new Student(NAME, EMAIL, PASSWORD,"0");
                                             Firebase = FirebaseDatabase.getInstance();
                                             if(isTeacher)
-                                            referenceToAddUser = Firebase.getReference("Teachers");
+                                                referenceToAddUser = Firebase.getReference("Teachers");
                                             else
                                                 referenceToAddUser = Firebase.getReference("Students");
 
