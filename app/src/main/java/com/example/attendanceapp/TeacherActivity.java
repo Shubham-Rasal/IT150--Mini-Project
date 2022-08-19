@@ -43,13 +43,15 @@ public class TeacherActivity extends AppCompatActivity {
 
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference classRef;
-//    private int totalNumber=80;
+    public int totalNumber=80;
 
 
     private ListView listView;
     private ListView presentStudents;
-    private HashSet<String> pStudents;
     private ArrayList<String> className;
+    private HashSet<String> pStudents;
+    private ArrayList<String> date=new ArrayList<String>();
+    private ArrayList<String> presentStudentsCount=new ArrayList<String>();
     private ArrayList<String> storeCorrespondingKeys;
 
 
@@ -74,7 +76,31 @@ public class TeacherActivity extends AppCompatActivity {
                                 public void onClick(View view) {
                                     cardView.setVisibility(View.GONE);
                                     StartNewClassButton.setVisibility(View.VISIBLE);
-                                    classRef.child(id).child("active").setValue("0");
+                                    classRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            for(DataSnapshot ds:snapshot.getChildren()){
+                                                if(String.valueOf(ds.child("active").getValue()).equals("1")){
+                                                    int c=0;
+//                                                    (ds.child("PresentStudents").getChildren()).size();
+                                                    for(DataSnapshot i:ds.child("PresentStudents").getChildren()){
+                                                        c++;
+
+                                                    }
+                                                    ds.getRef().child("presentStudent").setValue(String.valueOf(c));
+                                                }
+                                            }
+                                            Toast.makeText(TeacherActivity.this, "Wait", Toast.LENGTH_SHORT).show();
+                                            classRef.child(id).child("active").setValue("0");
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+                                            Toast.makeText(TeacherActivity.this, "Error!!", Toast.LENGTH_SHORT).show();
+
+                                        }
+                                    });
+
 
                                 }
                             });
@@ -111,21 +137,27 @@ public class TeacherActivity extends AppCompatActivity {
                 for (DataSnapshot classSnapshot : snapshot.getChildren()) {
                     Class c = classSnapshot.getValue(Class.class);
                     assert c != null;
-                    if ((c.getActive()).equals("1")) {
+                    if ((c.getActive()).equals("0")) {
                         if(!storeCorrespondingKeys.contains(classSnapshot.getKey())) {
                             className.add(c.getName());
+                            date.add(c.getDate());
+                            presentStudentsCount.add(c.getPresentStudent());
                         }
-                    storeCorrespondingKeys.add(classSnapshot.getKey());
+                        storeCorrespondingKeys.add(classSnapshot.getKey());
                     }
                 }
-                MyAdapter myAdapter = new MyAdapter(TeacherActivity.this, R.layout.cardview, className);
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        onButtonShowPopupWindowClick(view,parent.getItemAtPosition(position));
-                    }
-                });
-                listView.setAdapter(myAdapter);
+                if(storeCorrespondingKeys.size()!=0) {
+                    MyAdapter myAdapter = new MyAdapter(TeacherActivity.this, R.layout.cardview, className, date, presentStudentsCount);
+                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            onButtonShowPopupWindowClick(view, parent.getItemAtPosition(position));
+                        }
+                    });
+                    listView.setAdapter(myAdapter);
+                }
+//                else
+//                    Toast.makeText(TeacherActivity.this, "No classes", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -147,7 +179,7 @@ public class TeacherActivity extends AppCompatActivity {
 
     }
 
-    public void onButtonShowPopupWindowClick(View view, Object itemAtPosition) {
+    public void onButtonShowPopupWindowClick(View view, Object item) {
 
         // inflate the layout of the popup window
         LayoutInflater inflater = (LayoutInflater)
@@ -175,24 +207,28 @@ public class TeacherActivity extends AppCompatActivity {
 
 
 
-        popupText.setText(String.valueOf(itemAtPosition));
+
+        popupText.setText(String.valueOf(item));
+
+        popupText.setText(String.valueOf(item));
+        Toast.makeText(this, "title"+String.valueOf(item), Toast.LENGTH_SHORT).show();
 
 
         //Getting present students
         DatabaseReference pClassRef = classRef.child("");
-        Query pQuery = pClassRef.orderByChild("name").equalTo(String.valueOf(itemAtPosition));
+        Query pQuery = pClassRef.orderByChild("name").equalTo(String.valueOf(item));
         ValueEventListener ps = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 DataSnapshot PresentStudents = null;
-                for(DataSnapshot ps: snapshot.getChildren()){                 
-                                       
+                for(DataSnapshot ps: snapshot.getChildren()){
+
                     Log.d("pstude",String.valueOf(ps));
-                    PresentStudents =ps.child("students_present");
+                    PresentStudents =ps.child("PresentStudents");
                     break;
 
                 }
-                
+
                 Log.d("Reprent",String.valueOf(PresentStudents.getValue()));
                 for (DataSnapshot d : PresentStudents.getChildren()){
                     pStudents.add(String.valueOf(d.getValue()));
@@ -207,7 +243,7 @@ public class TeacherActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.e("Errror",String.valueOf(error));
+                Log.e("Error",String.valueOf(error));
 
             }
         };
@@ -228,5 +264,13 @@ public class TeacherActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+    }
+    @Override
+    public void onBackPressed(){
+        Intent startMain = new Intent(Intent.ACTION_MAIN);
+        startMain.addCategory(Intent.CATEGORY_HOME);
+        startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(startMain);
     }
 }

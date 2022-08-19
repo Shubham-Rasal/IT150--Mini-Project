@@ -73,7 +73,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             login.setVisibility(View.GONE);
 
             //sending credentials entered to validate to firebase
-            mAuth.signInWithEmailAndPassword("shubham.211it066@nitk.edu.in","123456").addOnCompleteListener(task -> {
+            mAuth.signInWithEmailAndPassword(userEmail,userPass).addOnCompleteListener(task -> {
                 if(task.isSuccessful())
                 {
                     Intent itype = getIntent();

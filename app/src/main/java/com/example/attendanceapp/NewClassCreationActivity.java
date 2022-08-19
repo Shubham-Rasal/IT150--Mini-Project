@@ -79,7 +79,7 @@ public class NewClassCreationActivity extends AppCompatActivity {
                 if(class_name.length()==0)
                     Toast.makeText(NewClassCreationActivity.this, "Please Enter the Class Name", Toast.LENGTH_SHORT).show();
                 else{
-                    Class c=new Class(class_name,timeBegin,timeEnd,date,"1");
+                    Class c=new Class(class_name,timeBegin,timeEnd,date,"1","0");
                     firebaseDatabase=FirebaseDatabase.getInstance();
                     databaseReference=firebaseDatabase.getReference("Classes");
                     String id=databaseReference.push().getKey();

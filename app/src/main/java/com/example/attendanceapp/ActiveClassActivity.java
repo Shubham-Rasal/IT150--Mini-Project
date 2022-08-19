@@ -34,12 +34,13 @@ public class ActiveClassActivity extends AppCompatActivity {
     TextView classLabel;
     TextView noClass;
     FirebaseDatabase db  = FirebaseDatabase.getInstance();
+    DatabaseReference databaseReference=db.getReference();
     DatabaseReference classRef = db.getReference("Classes");
     DatabaseReference testRef = db.getReference("Students");
     DatabaseReference activeclassRef;
     DataSnapshot activeClass;
 
-
+    ArrayList<String> pushedStudents=new ArrayList<String>();
 
 
     //auth
@@ -61,6 +62,7 @@ public class ActiveClassActivity extends AppCompatActivity {
         //getting active classes
 
         Query query = classRef.orderByChild("active").equalTo("1");
+
 
 
         ValueEventListener valueEventListener = new ValueEventListener() {
@@ -99,7 +101,6 @@ public class ActiveClassActivity extends AppCompatActivity {
 
         query.addValueEventListener(valueEventListener);
 
-
         //Adding biometrics auth
         Executor executor = ContextCompat.getMainExecutor(this);
         BiometricPrompt biometricPrompt = new BiometricPrompt(ActiveClassActivity.this,
@@ -119,36 +120,103 @@ public class ActiveClassActivity extends AppCompatActivity {
             public void onAuthenticationSucceeded(
                     @NonNull BiometricPrompt.AuthenticationResult result) {
                 super.onAuthenticationSucceeded(result);
-                Toast.makeText(getApplicationContext(),
-                        "Authentication succeeded!", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(),
+//                        "Authentication succeeded!", Toast.LENGTH_SHORT).show();
                 authenticate.setVisibility(View.GONE);
                 String email = currentUser.getEmail();
                 String id = currentUser.getUid();
 
-                testRef.child(id).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if(!pushedStudents.contains(email)) {
+                    DatabaseReference s = classRef.child(activeclassRef.getKey()).child("PresentStudents");
+                    s.child(id).setValue(email);
+                    pushedStudents.add(email);
+                }
 
-                        if (!task.isSuccessful()) {
-                            Log.e("firebase", "Error getting data", task.getException());
 
 
-                        } else {
-                            //adding student to class object
-                            String name =  String.valueOf(task.getResult().child("name").getValue());
-                            activeclassRef.child("students_present").child(currentUser.getUid()).setValue(name)
-                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if(task.isSuccessful())
-                                                Toast.makeText(ActiveClassActivity.this, "Added student successfully", Toast.LENGTH_SHORT).show();
-                                            else
-                                                Toast.makeText(ActiveClassActivity.this, "Error in adding the student", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                        }
-                    }
-                });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//                activeclassRef.child("presentStudent").setValue(Integer.parseInt(String.valueOf(activeClass.child("presentStudent").getValue()))+1)
+//                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                            @Override
+//                            public void onComplete(@NonNull Task<Void> task) {
+//                                if(task.isSuccessful()) {
+////                                                Toast.makeText(ActiveClassActivity.this, "Added student successfully", Toast.LENGTH_SHORT).show();
+//                                    finish();
+//                                }
+//
+//                                else
+//                                    Toast.makeText(ActiveClassActivity.this, "Error in adding the student", Toast.LENGTH_SHORT).show();
+//                            }
+//                        });
+
+//                databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+////                                    Toast.makeText(ActiveClassActivity.this, "heyhmm", Toast.LENGTH_SHORT).show();
+//                        for(DataSnapshot dataSnapshot:snapshot.getChildren()){
+////                                        Toast.makeText(ActiveClassActivity.this,dataSnapshot.getKey(), Toast.LENGTH_SHORT).show();
+//                            if(dataSnapshot.getKey().equals("Students")) {
+//                                for(DataSnapshot eachStudent:dataSnapshot.getChildren()){
+//                                    if((eachStudent.getKey()).equals(currentUser.getUid())){
+//                                        Toast.makeText(ActiveClassActivity.this, "hey", Toast.LENGTH_SHORT).show();
+////                                        eachStudent.getRef().child("numberOfClasses").setValue(String.valueOf(Integer.parseInt(String.valueOf(eachStudent.child("numberOfClasses").getValue())) + 1));
+//                                        break;
+//                                    }
+//                                }
+//
+//                            }
+//                        }
+//                    }
+
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError error) {
+//                        Toast.makeText(ActiveClassActivity.this, "Error!!", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+
+
+
+
+
+
+//                testRef.child(id).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+//
+//                        if (!task.isSuccessful()) {
+//                            Log.e("firebase", "Error getting data", task.getException());
+//
+//
+//                        } else {
+//                            //adding student to class object
+////                            activeclassRef.child("presentStudent").child(currentUser.getUid());
+////                            Query query2=testRef.orderByKey().equalTo(currentUser.getUid());
+////                            Toast.makeText(ActiveClassActivity.this, un, Toast.LENGTH_SHORT).show();
+////                            Toast.makeText(ActiveClassActivity.this, "yoyoyoyo", Toast.LENGTH_SHORT).show();
+//
+////                            String name =  String.valueOf(task.getResult().child("name").getValue());
+////                            testRef.child(currentUser.getUid()).child("numberOfClasses").setValue();
+//
+//
+//                        }
+//                    }
+//                });
 
 
             }
