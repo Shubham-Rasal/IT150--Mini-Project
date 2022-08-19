@@ -105,9 +105,7 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
 
                 }
                 else {
-                    authenticate.setVisibility(View.VISIBLE);
-                    classLabel.setVisibility(View.VISIBLE);
-                    noClass.setVisibility(View.GONE);
+                    noClass.setText("Not within the radius of active class");
 
 
                     Log.d("Active classes", String.valueOf(dataSnapshot));
@@ -233,8 +231,12 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
         double dis = distance(13.008100, 74.795979,Lat,Long);
         disText.setText(String.valueOf(dis));
         Log.i("distance",String.valueOf(dis));
-        if(dis<5)
-            Toast.makeText(this, "distance:"+dis, Toast.LENGTH_SHORT).show();
+        if(dis<5){
+            authenticate.setVisibility(View.VISIBLE);
+            classLabel.setVisibility(View.VISIBLE);
+            noClass.setVisibility(View.GONE);
+        }
+
 
     }
 
