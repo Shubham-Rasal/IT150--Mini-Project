@@ -1,6 +1,7 @@
 package com.example.attendanceapp;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
@@ -98,9 +99,10 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
 
 
         ValueEventListener valueEventListener = new ValueEventListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(String.valueOf(dataSnapshot.getValue())=="null") {
+                if(String.valueOf(dataSnapshot.getValue()).equals("null")) {
                     Toast.makeText(ActiveClassActivity.this, "no active class available"+dataSnapshot.getChildren(), Toast.LENGTH_SHORT).show();
 
                 }
@@ -150,8 +152,7 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
             public void onAuthenticationSucceeded(
                     @NonNull BiometricPrompt.AuthenticationResult result) {
                 super.onAuthenticationSucceeded(result);
-//                Toast.makeText(getApplicationContext(),
-//                        "Authentication succeeded!", Toast.LENGTH_SHORT).show();
+
                 authenticate.setVisibility(View.GONE);
                 String email = currentUser.getEmail();
                 String id = currentUser.getUid();
@@ -206,7 +207,7 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
         }
     }
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         ArrayList<String> permissionsToRequest = new ArrayList<>();
         for (int i = 0; i < grantResults.length; i++) {
@@ -228,10 +229,12 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
         double Long = location.getLongitude();
         //13.007897281772347, 74.79728887438183
         //13.007859, 74.796000
-        double dis = distance(13.008100, 74.795979,Lat,Long);
+        //aravali
+        //13.008011, 74.797227
+        double dis = distance(13.008011, 74.797227,Lat,Long);
         disText.setText(String.valueOf(dis));
         Log.i("distance",String.valueOf(dis));
-        if(dis<5){
+        if(dis<25){
             authenticate.setVisibility(View.VISIBLE);
             classLabel.setVisibility(View.VISIBLE);
             noClass.setVisibility(View.GONE);
