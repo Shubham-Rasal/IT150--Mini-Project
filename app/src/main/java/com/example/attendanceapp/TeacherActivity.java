@@ -79,11 +79,11 @@ public class TeacherActivity extends AppCompatActivity {
                                     classRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                            Toast.makeText(TeacherActivity.this, "hmm", Toast.LENGTH_SHORT).show();
+//                                            Toast.makeText(TeacherActivity.this, "hmm", Toast.LENGTH_SHORT).show();
                                             for(DataSnapshot ds:snapshot.getChildren()){
 //                                                Toast.makeText(TeacherActivity.this,"yeah: "+String.valueOf(ds.child("active").getValue()), Toast.LENGTH_SHORT).show();
                                                 if(String.valueOf(ds.child("active").getValue()).equals("1")){
-                                                    Toast.makeText(TeacherActivity.this, "step2", Toast.LENGTH_SHORT).show();
+//                                                    Toast.makeText(TeacherActivity.this, "step2", Toast.LENGTH_SHORT).show();
                                                     int c=0;
 //                                                    (ds.child("PresentStudents").getChildren()).size();
 //                                                    Toast.makeText(TeacherActivity.this, ds.child("PresentStudents"), Toast.LENGTH_SHORT).show();
