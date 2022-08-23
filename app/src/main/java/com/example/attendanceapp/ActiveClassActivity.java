@@ -53,6 +53,7 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
     TextView noClass;
     TextView disText;
     boolean GpsStatus =false;
+    LocationManager lm;
 
     FirebaseDatabase db = FirebaseDatabase.getInstance();
     DatabaseReference databaseReference = db.getReference();
@@ -81,7 +82,7 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
         classLabel.setVisibility(View.GONE);
 
         //adding location manager
-        LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+         lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -238,6 +239,9 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
             authenticate.setVisibility(View.VISIBLE);
             classLabel.setVisibility(View.VISIBLE);
             noClass.setVisibility(View.GONE);
+            lm.removeUpdates(this);
+
+
         }
 
 
