@@ -22,6 +22,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 
+import com.ebanx.swipebtn.OnActiveListener;
+import com.ebanx.swipebtn.OnStateChangeListener;
+import com.ebanx.swipebtn.SwipeButton;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -52,6 +55,8 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
     TextView classLabel;
     TextView noClass;
     TextView disText;
+    SwipeButton enableButton;
+
     boolean GpsStatus =false;
 
     FirebaseDatabase db = FirebaseDatabase.getInstance();
@@ -74,11 +79,15 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_active_class);
         authenticate = (Button) findViewById(R.id.authenticate);
+        enableButton = (SwipeButton) findViewById(R.id.swipeButton);
         classLabel = (TextView) findViewById(R.id.class_label);
         noClass = (TextView) findViewById(R.id.no_class);
-        disText = (TextView) findViewById(R.id.distance);
+        disText = findViewById(R.id.distance);
         authenticate.setVisibility(View.GONE);
+        enableButton.setVisibility(View.GONE);
+
         classLabel.setVisibility(View.GONE);
+
 
         //adding location manager
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -154,6 +163,7 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
                 super.onAuthenticationSucceeded(result);
 
                 authenticate.setVisibility(View.GONE);
+                enableButton.setVisibility(View.GONE);
                 String email = currentUser.getEmail();
                 String id = currentUser.getUid();
 
@@ -189,6 +199,15 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
             //calling the authenticate method
             biometricPrompt.authenticate(promptInfo);
 
+        });
+
+        enableButton.setOnActiveListener(new OnActiveListener() {
+            @Override
+            public void onActive() {
+                Toast.makeText(ActiveClassActivity.this, "Active!", Toast.LENGTH_SHORT).show();
+                biometricPrompt.authenticate(promptInfo);
+
+            }
         });
 
 
@@ -227,17 +246,20 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
     public void onLocationChanged(@NonNull Location location) {
         double Lat= location.getLatitude();
         double Long = location.getLongitude();
-        //13.007897281772347, 74.79728887438183
+//        13.007862, 74.795968
         //13.007859, 74.796000
         //aravali
         //13.008011, 74.797227
-        double dis = distance(13.008011, 74.797227,Lat,Long);
+        double dis = distance(13.007862, 74.795968,Lat,Long);
         disText.setText(String.valueOf(dis));
         Log.i("distance",String.valueOf(dis));
         if(dis<25){
             authenticate.setVisibility(View.VISIBLE);
+            enableButton.setVisibility(View.VISIBLE);
+
             classLabel.setVisibility(View.VISIBLE);
             noClass.setVisibility(View.GONE);
+
         }
 
 
