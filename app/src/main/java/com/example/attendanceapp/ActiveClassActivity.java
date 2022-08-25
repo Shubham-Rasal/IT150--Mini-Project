@@ -51,14 +51,14 @@ import java.util.concurrent.Executor;
 public class ActiveClassActivity extends AppCompatActivity implements LocationListener {
 
 
-//    Button authenticate;
+    //    Button authenticate;
     TextView classLabel;
     TextView noClass;
     TextView disText;
     SwipeButton enableButton;
     LocationManager lm;
 
-    boolean GpsStatus =false;
+    boolean GpsStatus = false;
 
     FirebaseDatabase db = FirebaseDatabase.getInstance();
     DatabaseReference databaseReference = db.getReference();
@@ -107,16 +107,29 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
         Query query = classRef.orderByChild("active").equalTo("1");
 
 
-
         ValueEventListener valueEventListener = new ValueEventListener() {
             @SuppressLint("SetTextI18n")
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(String.valueOf(dataSnapshot.getValue()).equals("null")) {
-                    Toast.makeText(ActiveClassActivity.this, "no active class available"+dataSnapshot.getChildren(), Toast.LENGTH_SHORT).show();
+                if (String.valueOf(dataSnapshot.getValue()).equals("null")) {
+                    enableButton.setVisibility(View.GONE);
+                    classLabel.setVisibility(View.GONE);
+                    Toast.makeText(ActiveClassActivity.this, "no active class available" + dataSnapshot.getChildren(), Toast.LENGTH_SHORT).show();
 
-                }
-                else {
+                } else {
+
+                    if (ActivityCompat.checkSelfPermission(ActiveClassActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(ActiveClassActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        // TODO: Consider calling
+                        //    ActivityCompat#requestPermissions
+                        // here to request the missing permissions, and then overriding
+                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                        //                                          int[] grantResults)
+                        // to handle the case where the user grants the permission. See the documentation
+                        // for ActivityCompat#requestPermissions for more details.
+                        return;
+                    }
+                    lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ActiveClassActivity.this);
+
                     noClass.setText("Not within the radius of active class");
 
 
@@ -173,9 +186,6 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
                     s.child(id).setValue(email);
                     pushedStudents.add(email);
                 }
-
-
-
 
             }
 
@@ -250,7 +260,6 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
         disText.setText(String.valueOf(dis));
         Log.i("distance",String.valueOf(dis));
         if(dis<25){
-//            authenticate.setVisibility(View.VISIBLE);
             enableButton.setVisibility(View.VISIBLE);
 
             classLabel.setVisibility(View.VISIBLE);
