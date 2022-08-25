@@ -22,6 +22,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 
+import com.ebanx.swipebtn.OnActiveListener;
+import com.ebanx.swipebtn.OnStateChangeListener;
+import com.ebanx.swipebtn.SwipeButton;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -48,12 +51,14 @@ import java.util.concurrent.Executor;
 public class ActiveClassActivity extends AppCompatActivity implements LocationListener {
 
 
-    Button authenticate;
+    //    Button authenticate;
     TextView classLabel;
     TextView noClass;
     TextView disText;
-    boolean GpsStatus =false;
+    SwipeButton enableButton;
     LocationManager lm;
+
+    boolean GpsStatus = false;
 
     FirebaseDatabase db = FirebaseDatabase.getInstance();
     DatabaseReference databaseReference = db.getReference();
@@ -74,15 +79,20 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_active_class);
-        authenticate = (Button) findViewById(R.id.authenticate);
+//        authenticate = (Button) findViewById(R.id.authenticate);
+        enableButton = (SwipeButton) findViewById(R.id.swipeButton);
         classLabel = (TextView) findViewById(R.id.class_label);
         noClass = (TextView) findViewById(R.id.no_class);
-        disText = (TextView) findViewById(R.id.distance);
-        authenticate.setVisibility(View.GONE);
+        disText = findViewById(R.id.distance);
+//        authenticate.setVisibility(View.GONE);
+        enableButton.setVisibility(View.GONE);
+
         classLabel.setVisibility(View.GONE);
+
 
         //adding location manager
          lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -98,16 +108,29 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
         Query query = classRef.orderByChild("active").equalTo("1");
 
 
-
         ValueEventListener valueEventListener = new ValueEventListener() {
             @SuppressLint("SetTextI18n")
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(String.valueOf(dataSnapshot.getValue()).equals("null")) {
-                    Toast.makeText(ActiveClassActivity.this, "no active class available"+dataSnapshot.getChildren(), Toast.LENGTH_SHORT).show();
+                if (String.valueOf(dataSnapshot.getValue()).equals("null")) {
+                    enableButton.setVisibility(View.GONE);
+                    classLabel.setVisibility(View.GONE);
+                    Toast.makeText(ActiveClassActivity.this, "no active class available" + dataSnapshot.getChildren(), Toast.LENGTH_SHORT).show();
 
-                }
-                else {
+                } else {
+
+                    if (ActivityCompat.checkSelfPermission(ActiveClassActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(ActiveClassActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        // TODO: Consider calling
+                        //    ActivityCompat#requestPermissions
+                        // here to request the missing permissions, and then overriding
+                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                        //                                          int[] grantResults)
+                        // to handle the case where the user grants the permission. See the documentation
+                        // for ActivityCompat#requestPermissions for more details.
+                        return;
+                    }
+                    lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ActiveClassActivity.this);
+
                     noClass.setText("Not within the radius of active class");
 
 
@@ -154,7 +177,8 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
                     @NonNull BiometricPrompt.AuthenticationResult result) {
                 super.onAuthenticationSucceeded(result);
 
-                authenticate.setVisibility(View.GONE);
+//                authenticate.setVisibility(View.GONE);
+                enableButton.setVisibility(View.GONE);
                 String email = currentUser.getEmail();
                 String id = currentUser.getUid();
 
@@ -163,9 +187,6 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
                     s.child(id).setValue(email);
                     pushedStudents.add(email);
                 }
-
-
-
 
             }
 
@@ -185,11 +206,14 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
                 .setSubtitle("Log in using your biometric credential")
                 .setNegativeButtonText("Use account password")
                 .build();
-        authenticate.setOnClickListener(v -> {
 
-            //calling the authenticate method
-            biometricPrompt.authenticate(promptInfo);
+        enableButton.setOnActiveListener(new OnActiveListener() {
+            @Override
+            public void onActive() {
+                Toast.makeText(ActiveClassActivity.this, "Active!", Toast.LENGTH_SHORT).show();
+                biometricPrompt.authenticate(promptInfo);
 
+            }
         });
 
 
@@ -228,15 +252,17 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
     public void onLocationChanged(@NonNull Location location) {
         double Lat= location.getLatitude();
         double Long = location.getLongitude();
-        //13.007897281772347, 74.79728887438183
+//        13.007862, 74.795968
         //13.007859, 74.796000
         //aravali
         //13.008011, 74.797227
-        double dis = distance(13.008011, 74.797227,Lat,Long);
+        //my room 13.008064, 74.795947
+        double dis = distance(13.008064, 74.795947,Lat,Long);
         disText.setText(String.valueOf(dis));
         Log.i("distance",String.valueOf(dis));
         if(dis<25){
-            authenticate.setVisibility(View.VISIBLE);
+            enableButton.setVisibility(View.VISIBLE);
+
             classLabel.setVisibility(View.VISIBLE);
             noClass.setVisibility(View.GONE);
             lm.removeUpdates(this);
