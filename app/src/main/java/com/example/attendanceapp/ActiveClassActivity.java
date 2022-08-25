@@ -51,11 +51,12 @@ import java.util.concurrent.Executor;
 public class ActiveClassActivity extends AppCompatActivity implements LocationListener {
 
 
-    Button authenticate;
+//    Button authenticate;
     TextView classLabel;
     TextView noClass;
     TextView disText;
     SwipeButton enableButton;
+    LocationManager lm;
 
     boolean GpsStatus =false;
 
@@ -78,19 +79,19 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_active_class);
-        authenticate = (Button) findViewById(R.id.authenticate);
+//        authenticate = (Button) findViewById(R.id.authenticate);
         enableButton = (SwipeButton) findViewById(R.id.swipeButton);
         classLabel = (TextView) findViewById(R.id.class_label);
         noClass = (TextView) findViewById(R.id.no_class);
         disText = findViewById(R.id.distance);
-        authenticate.setVisibility(View.GONE);
+//        authenticate.setVisibility(View.GONE);
         enableButton.setVisibility(View.GONE);
 
         classLabel.setVisibility(View.GONE);
 
 
         //adding location manager
-        LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -162,7 +163,7 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
                     @NonNull BiometricPrompt.AuthenticationResult result) {
                 super.onAuthenticationSucceeded(result);
 
-                authenticate.setVisibility(View.GONE);
+//                authenticate.setVisibility(View.GONE);
                 enableButton.setVisibility(View.GONE);
                 String email = currentUser.getEmail();
                 String id = currentUser.getUid();
@@ -194,12 +195,6 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
                 .setSubtitle("Log in using your biometric credential")
                 .setNegativeButtonText("Use account password")
                 .build();
-        authenticate.setOnClickListener(v -> {
-
-            //calling the authenticate method
-            biometricPrompt.authenticate(promptInfo);
-
-        });
 
         enableButton.setOnActiveListener(new OnActiveListener() {
             @Override
@@ -250,15 +245,17 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
         //13.007859, 74.796000
         //aravali
         //13.008011, 74.797227
-        double dis = distance(13.007862, 74.795968,Lat,Long);
+        //my room 13.008064, 74.795947
+        double dis = distance(13.008064, 74.795947,Lat,Long);
         disText.setText(String.valueOf(dis));
         Log.i("distance",String.valueOf(dis));
         if(dis<25){
-            authenticate.setVisibility(View.VISIBLE);
+//            authenticate.setVisibility(View.VISIBLE);
             enableButton.setVisibility(View.VISIBLE);
 
             classLabel.setVisibility(View.VISIBLE);
             noClass.setVisibility(View.GONE);
+            lm.removeUpdates(this);
 
         }
 

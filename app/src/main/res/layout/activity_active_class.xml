@@ -48,26 +48,20 @@
 
     <TextView
         android:id="@+id/class_label"
-        android:layout_width="275dp"
-        android:layout_height="171dp"
-        android:gravity="center_vertical"
-        android:text="IT150 -Lab "
+        android:layout_width="261dp"
+        android:layout_height="139dp"
+        android:background="@drawable/button_design"
+        android:gravity="center|center_vertical"
+        android:text=""
+        android:textAlignment="gravity"
+        android:textColor="#035767"
+        android:textSize="24sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/activeTitle1"
         app:layout_constraintVertical_bias="0.233" />
-
-    <Button
-        android:id="@+id/authenticate"
-        android:layout_width="111dp"
-        android:layout_height="56dp"
-        android:layout_marginTop="24dp"
-        android:text="Enter"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/swipeButton" />
 
     <com.ebanx.swipebtn.SwipeButton
         android:id="@+id/swipeButton"
