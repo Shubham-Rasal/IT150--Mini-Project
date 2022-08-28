@@ -6,63 +6,84 @@
     android:layout_height="match_parent"
     tools:context=".ActiveClassActivity">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
-        android:layout_width="304dp"
-        android:layout_height="228dp"
-        android:layout_marginTop="132dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/class_label"
-            android:layout_width="210dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="52dp"
-            android:gravity="center_vertical"
-            android:text="IT150 -Lab "
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/authenticate"
-            android:layout_width="97dp"
-            android:layout_height="0dp"
-            android:layout_marginEnd="9dp"
-            android:text="Enter"
-            app:layout_constraintBottom_toBottomOf="@+id/class_label"
-            app:layout_constraintEnd_toEndOf="@+id/class_label"
-            app:layout_constraintTop_toTopOf="@+id/class_label" />
-
-        <TextView
-            android:id="@+id/no_class"
-            android:layout_width="209dp"
-            android:layout_height="75dp"
-            android:layout_marginTop="52dp"
-            android:gravity="center|center_horizontal|center_vertical"
-            android:text="No active class available"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.505"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
     <TextView
         android:id="@+id/activeTitle1"
-        android:layout_width="149dp"
-        android:layout_height="42dp"
-        android:layout_marginStart="58dp"
-        android:layout_marginTop="87dp"
-        android:layout_marginBottom="61dp"
-        android:text="Active Classes"
+        android:layout_width="150dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/active_classes"
         android:textColor="#311B92"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/distance"
+        android:layout_width="176dp"
+        android:layout_height="75dp"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/swipeButton"
+        app:layout_constraintVertical_bias="0.863" />
+
+    <TextView
+        android:id="@+id/no_class"
+        android:layout_width="232dp"
+        android:layout_height="82dp"
+        android:gravity="center|center_horizontal|center_vertical"
+        android:text="@string/no_active_class_available"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.342" />
+
+    <TextView
+        android:id="@+id/class_label"
+        android:layout_width="261dp"
+        android:layout_height="139dp"
+        android:background="@drawable/button_design"
+        android:gravity="center|center_vertical"
+        android:text=""
+        android:textAlignment="gravity"
+        android:textColor="#035767"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/activeTitle1"
+        app:layout_constraintVertical_bias="0.233" />
+
+    <com.ebanx.swipebtn.SwipeButton
+        android:id="@+id/swipeButton"
+        android:layout_width="379dp"
+        android:layout_height="82dp"
+        android:layout_marginTop="48dp"
+        app:button_background="@drawable/button_design"
+        app:button_bottom_padding="15dp"
+        app:button_image_disabled="@drawable/ic_baseline_lock_open_24"
+        app:button_image_enabled="@drawable/ic_baseline_lock_open_24"
+        app:button_left_padding="65dp"
+        app:button_right_padding="15dp"
+        app:button_top_padding="15dp"
+        app:inner_text="Swipe to enter"
+        app:inner_text_bottom_padding="15dp"
+        app:inner_text_size="20dp"
+        app:inner_text_top_padding="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/class_label"
+        app:layout_constraintVertical_bias="0.255" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
