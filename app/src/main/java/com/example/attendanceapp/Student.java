@@ -1,7 +1,10 @@
 package com.example.attendanceapp;
 
 public class Student {
-    private String name,email,password,numberOfClasses;
+    private String name;
+    private String email;
+    private String password;
+    private String numberOfClasses;
 
     public void setNumberOfClasses(String numberOfClasses) {
         this.numberOfClasses = numberOfClasses;
@@ -39,6 +42,6 @@ public class Student {
         this.name = name;
         this.email = email;
         this.password = password;
-        this.numberOfClasses="0";
+        this.numberOfClasses=numberOfClasses;
     }
 }

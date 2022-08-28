@@ -40,6 +40,7 @@ public class TeacherActivity extends AppCompatActivity {
     private ImageView cross;
     private CardView cardView;
     private Button StartNewClassButton;
+    private ImageView studentList;
 
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference classRef;
@@ -50,8 +51,8 @@ public class TeacherActivity extends AppCompatActivity {
     private ListView presentStudents;
     private ArrayList<String> className;
     private HashSet<String> pStudents;
-    private ArrayList<String> date=new ArrayList<String>();
-    private ArrayList<String> presentStudentsCount=new ArrayList<String>();
+    private ArrayList<String> date=new ArrayList<>();
+    private ArrayList<String> presentStudentsCount=new ArrayList<>();
     private ArrayList<String> storeCorrespondingKeys;
 
 
@@ -127,6 +128,13 @@ public class TeacherActivity extends AppCompatActivity {
         cardView = findViewById(R.id.cardView);
         cardView.setVisibility(View.INVISIBLE);
         listView = findViewById(R.id.listView1);
+        studentList=findViewById(R.id.studentList);
+        studentList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(TeacherActivity.this,StudentListActivity.class));
+            }
+        });
 
         firebaseDatabase = FirebaseDatabase.getInstance();
         classRef = firebaseDatabase.getReference("Classes");

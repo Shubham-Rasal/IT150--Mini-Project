@@ -73,7 +73,7 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
     FirebaseDatabase db = FirebaseDatabase.getInstance();
     DatabaseReference databaseReference = db.getReference();
     DatabaseReference classRef = db.getReference("Classes");
-    DatabaseReference testRef = db.getReference("Students");
+    DatabaseReference studentReference = db.getReference("Students");
     DatabaseReference activeclassRef;
     DataSnapshot activeClass;
 
@@ -197,6 +197,30 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
                     DatabaseReference s = classRef.child(activeclassRef.getKey()).child("PresentStudents");
                     s.child(id).setValue(email);
                     pushedStudents.add(email);
+                    Toast.makeText(ActiveClassActivity.this, "Step1", Toast.LENGTH_SHORT).show();
+//                    studentReference.child(id).child("numberOfClasses").setValue(Integer.parseInt(String.valueOf(studentReference.child("numberOfClasses"))));
+//
+//
+                    studentReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                            Toast.makeText(ActiveClassActivity.this, "I'm in", Toast.LENGTH_SHORT).show();
+                            for(DataSnapshot studentSnapshot:snapshot.getChildren()){
+                                if(studentSnapshot.getKey().equals(id)){
+                                    int numberOfPresentStudents=Integer.parseInt(String.valueOf(studentSnapshot.child("numberOfClasses").getValue()))+1;
+                                    studentSnapshot.getRef().child("numberOfClasses").setValue(numberOfPresentStudents);
+//                                    Toast.makeText(ActiveClassActivity.this, ""+Integer.parseInt(String.valueOf(studentSnapshot.child("numberOfClasses").getValue()))+1, Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            Toast.makeText(ActiveClassActivity.this, "Error!!", Toast.LENGTH_SHORT).show();
+
+                        }
+                    });
+
                 }
                 // To add fade animation
                 Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_in);

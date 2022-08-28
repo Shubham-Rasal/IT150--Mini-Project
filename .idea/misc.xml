@@ -10,14 +10,13 @@
         <entry key="..\:/Users/shubham/AndroidStudioProjects/AttendanceApp/app/src/main/res/drawable/ic_lock_outline_black_24dp.xml" value="0.187" />
         <entry key="..\:/Users/shubham/AndroidStudioProjects/AttendanceApp/app/src/main/res/layout/activity_active_class.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/shubham/AndroidStudioProjects/AttendanceApp/app/src/main/res/layout/activity_main.xml" value="0.22" />
-        <entry key="..\:/Users/shubham/AndroidStudioProjects/AttendanceApp/app/src/main/res/layout/card_front.xml" value="0.15217391304347827" />
-        <entry key="..\:/Users/shubham/AndroidStudioProjects/AttendanceApp/app/src/main/res/layout/layout.xml" value="0.15217391304347827" />
         <entry key="..\:/Users/shubham/AndroidStudioProjects/AttendanceApp/app/src/main/res/layout/login_main.xml" value="0.16666666666666666" />
-        <entry key="..\:/Users/shubham/AndroidStudioProjects/AttendanceApp/app/src/main/res/layout/popup_window.xml" value="0.15217391304347827" />
         <entry key="app/src/main/res/layout/activity_active_class.xml" value="0.3605916341145834" />
-        <entry key="app/src/main/res/layout/activity_teacher.xml" value="0.4141754150390625" />
-        <entry key="app/src/main/res/layout/cardview.xml" value="0.4442632039388021" />
-        <entry key="app/src/main/res/layout/popup_window.xml" value="0.24259259259259258" />
+        <entry key="app/src/main/res/layout/activity_student_list.xml" value="0.15485229492187497" />
+        <entry key="app/src/main/res/layout/activity_teacher.xml" value="0.3516357421875" />
+        <entry key="app/src/main/res/layout/cardview.xml" value="0.3485905965169272" />
+        <entry key="app/src/main/res/layout/cardview2.xml" value="0.44470062255859377" />
+        <entry key="app/src/main/res/layout/popup_window.xml" value="0.298797607421875" />
       </map>
     </option>
   </component>
