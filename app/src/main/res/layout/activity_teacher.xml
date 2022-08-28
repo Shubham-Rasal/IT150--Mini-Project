@@ -82,7 +82,7 @@
         android:layout_width="405dp"
         android:layout_height="311dp"
         android:divider="@null"
-        android:dividerHeight="10dp"
+        android:dividerHeight="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

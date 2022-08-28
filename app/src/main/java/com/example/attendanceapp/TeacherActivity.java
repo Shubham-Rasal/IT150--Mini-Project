@@ -69,7 +69,7 @@ public class TeacherActivity extends AppCompatActivity {
                             cardView.setVisibility(View.VISIBLE);
                             String date = c.getDate();
                             String className = c.getName();
-                            classDate.setText(className + "   " + date);
+                            classDate.setText(className + "         " + date);
                             Toast.makeText(TeacherActivity.this, "Students can now confirm their attendance", Toast.LENGTH_SHORT).show();
                             cross.setOnClickListener(new View.OnClickListener() {
                                 @Override
@@ -97,7 +97,6 @@ public class TeacherActivity extends AppCompatActivity {
                                                     ds.getRef().child("presentStudent").setValue(String.valueOf(c));
                                                 }
                                             }
-                                            Toast.makeText(TeacherActivity.this, "Wait", Toast.LENGTH_SHORT).show();
                                             classRef.child(id).child("active").setValue("0");
                                         }
 
@@ -146,11 +145,11 @@ public class TeacherActivity extends AppCompatActivity {
                     assert c != null;
                     if ((c.getActive()).equals("0")) {
                         if(!storeCorrespondingKeys.contains(classSnapshot.getKey())) {
-                            className.add(c.getName());
-                            date.add(c.getDate());
-                            presentStudentsCount.add(c.getPresentStudent());
+                            className.add(0,c.getName());
+                            date.add(0,c.getDate());
+                            presentStudentsCount.add(0,c.getPresentStudent());
                         }
-                        storeCorrespondingKeys.add(classSnapshot.getKey());
+                        storeCorrespondingKeys.add(0,classSnapshot.getKey());
                     }
                 }
                 if(storeCorrespondingKeys.size()!=0) {
