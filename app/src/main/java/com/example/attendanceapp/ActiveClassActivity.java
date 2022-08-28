@@ -1,16 +1,21 @@
 package com.example.attendanceapp;
 
 import android.Manifest;
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorSet;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -57,6 +62,11 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
     TextView disText;
     SwipeButton enableButton;
     LocationManager lm;
+    private AnimatorSet mSetRightOut;
+    private AnimatorSet mSetLeftIn;
+    private boolean mIsBackVisible = false;
+    private View mCardFrontLayout;
+    private View mCardBackLayout;
 
     boolean GpsStatus = false;
 
@@ -91,7 +101,7 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
 
 
         //adding location manager
-         lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -148,9 +158,10 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
                 }
 
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Log.e("Firebase error",String.valueOf(databaseError));
+                Log.e("Firebase error", String.valueOf(databaseError));
 
             }
         };
@@ -182,11 +193,17 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
                 String email = currentUser.getEmail();
                 String id = currentUser.getUid();
 
-                if(!pushedStudents.contains(email)) {
+                if (!pushedStudents.contains(email)) {
                     DatabaseReference s = classRef.child(activeclassRef.getKey()).child("PresentStudents");
                     s.child(id).setValue(email);
                     pushedStudents.add(email);
                 }
+                // To add fade animation
+                Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_in);
+                classLabel.setText("Attendance marked successfully!!😊😊");
+                int col = Color.parseColor("#25b84c");
+                classLabel.setBackgroundColor(col);
+                classLabel.startAnimation(animation);
 
             }
 
@@ -220,17 +237,17 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
     }
 
 
-
     @Override
     public void onStart() {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = userAuth.getCurrentUser();
-        if(currentUser == null){
+        if (currentUser == null) {
             Toast.makeText(this, "No current user", Toast.LENGTH_SHORT).show();
 
         }
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -250,25 +267,23 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
 
     @Override
     public void onLocationChanged(@NonNull Location location) {
-        double Lat= location.getLatitude();
+        double Lat = location.getLatitude();
         double Long = location.getLongitude();
 //        13.007862, 74.795968
         //13.007859, 74.796000
         //aravali
         //13.008011, 74.797227
         //my room 13.008064, 74.795947
-        double dis = distance(13.008011, 74.797227,Lat,Long);
+        double dis = distance(13.008011, 74.797227, Lat, Long);
         disText.setText(String.valueOf(dis));
-        Log.i("distance",String.valueOf(dis));
-        if(dis<100){
-            enableButton.setVisibility(View.VISIBLE);
+        Log.i("distance", String.valueOf(dis));
+//        if(dis<100){
+        enableButton.setVisibility(View.VISIBLE);
+        classLabel.setVisibility(View.VISIBLE);
+        noClass.setVisibility(View.GONE);
+        lm.removeUpdates(this);
 
-            classLabel.setVisibility(View.VISIBLE);
-            noClass.setVisibility(View.GONE);
-            lm.removeUpdates(this);
-
-
-        }
+//        }
 
 
     }
@@ -291,7 +306,6 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
     @Override
     public void onProviderEnabled(@NonNull String provider) {
         LocationListener.super.onProviderEnabled(provider);
-        Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -307,7 +321,7 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
         dist = dist * 60 * 1.1515;
         dist = dist * 1.609344;
 
-        return (dist*1000-3);
+        return (dist * 1000 - 3);
     }
 
     /*:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
@@ -323,8 +337,6 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
     private double rad2deg(double rad) {
         return (rad * 180.0 / Math.PI);
     }
-
-
 
 
 }
