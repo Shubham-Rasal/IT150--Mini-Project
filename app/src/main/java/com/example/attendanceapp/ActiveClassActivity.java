@@ -257,10 +257,10 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
         //aravali
         //13.008011, 74.797227
         //my room 13.008064, 74.795947
-        double dis = distance(13.008064, 74.795947,Lat,Long);
+        double dis = distance(13.008011, 74.797227,Lat,Long);
         disText.setText(String.valueOf(dis));
         Log.i("distance",String.valueOf(dis));
-        if(dis<25){
+        if(dis<100){
             enableButton.setVisibility(View.VISIBLE);
 
             classLabel.setVisibility(View.VISIBLE);
