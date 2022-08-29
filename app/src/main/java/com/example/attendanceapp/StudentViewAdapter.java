@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -46,10 +47,12 @@ public class StudentViewAdapter extends ArrayAdapter {
         View view= LayoutInflater.from(getContext()).inflate(R.layout.cardview2,parent,false);
         TextView studentName=view.findViewById(R.id.studentName);
         TextView attendancePercentage=view.findViewById(R.id.attendancePercentage);
-        studentName.setText(getItem(position));
-        int percentage=getNumberOfPresentClasses(position)*100/count;
+
+
 //        attendancePercentage.setText(String.format("%0.2lf",String.valueOf(percentage)));
-        attendancePercentage.setText(percentage+"%");
+        studentName.setText(getItem(position));
+        int percentage=getNumberOfPresentClasses(position)*100;
+        attendancePercentage.setText(percentage/count+"%");
         return view;
     }
 }

@@ -60,7 +60,9 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
     TextView classLabel;
     TextView noClass;
     TextView disText;
+    TextView Percentage;
     SwipeButton enableButton;
+//    Button seeAttendance;
     LocationManager lm;
     private AnimatorSet mSetRightOut;
     private AnimatorSet mSetLeftIn;
@@ -77,6 +79,8 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
     DatabaseReference activeclassRef;
     DataSnapshot activeClass;
 
+    int count=0;
+
     ArrayList<String> pushedStudents = new ArrayList<String>();
 
 
@@ -89,7 +93,34 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_active_class);
+
+
 //        authenticate = (Button) findViewById(R.id.authenticate);
+//        seeAttendance=findViewById(R.id.seeAttendance);
+//        seeAttendance.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                getClassCount();
+////                displayPercentage();
+//            }
+//        });
+        studentReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                //also displays the attendance percentage
+                getClassCount();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(ActiveClassActivity.this, "Error!!!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+
+
+
         enableButton = (SwipeButton) findViewById(R.id.swipeButton);
         classLabel = (TextView) findViewById(R.id.class_label);
         noClass = (TextView) findViewById(R.id.no_class);
@@ -193,12 +224,18 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
                 String email = currentUser.getEmail();
                 String id = currentUser.getUid();
 
-                if (!pushedStudents.contains(email)) {
-                    DatabaseReference s = classRef.child(activeclassRef.getKey()).child("PresentStudents");
+                DatabaseReference s = classRef.child(activeclassRef.getKey()).child("PresentStudents");
                     s.child(id).setValue(email);
-                    pushedStudents.add(email);
-                    Toast.makeText(ActiveClassActivity.this, "Step1", Toast.LENGTH_SHORT).show();
+//                    pushedStudents.add(email);
+//                    Toast.makeText(ActiveClassActivity.this, "Doesn't contain", Toast.LENGTH_SHORT).show();
 //                    studentReference.child(id).child("numberOfClasses").setValue(Integer.parseInt(String.valueOf(studentReference.child("numberOfClasses"))));
+
+                    // To add fade animation
+                    Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_in);
+                    classLabel.setText("Attendance marked successfully!!😊😊");
+                    int col = Color.parseColor("#25b84c");
+                    classLabel.setBackgroundColor(col);
+                    classLabel.startAnimation(animation);
 //
 //
                     studentReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -221,15 +258,11 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
                         }
                     });
 
-                }
-                // To add fade animation
-                Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_in);
-                classLabel.setText("Attendance marked successfully!!😊😊");
-                int col = Color.parseColor("#25b84c");
-                classLabel.setBackgroundColor(col);
-                classLabel.startAnimation(animation);
 
-            }
+
+                }
+
+
 
             @Override
             public void onAuthenticationFailed() {
@@ -362,5 +395,74 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
         return (rad * 180.0 / Math.PI);
     }
 
+    public void displayPercentage(){
+        Percentage=findViewById(R.id.Percentage);
+        String ID=currentUser.getUid();
+//        Toast.makeText(this, "1", Toast.LENGTH_SHORT).show();
+        if(count!=0) {
+            studentReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                Toast.makeText(ActiveClassActivity.this, "2", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(ActiveClassActivity.this, "2", Toast.LENGTH_SHORT).show();
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+//                    Toast.makeText(ActiveClassActivity.this, ds.getKey(), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(ActiveClassActivity.this, ID, Toast.LENGTH_SHORT).show();
+                        if (ds.getKey().equals(ID)) {
+                        Toast.makeText(ActiveClassActivity.this, "I'm in", Toast.LENGTH_SHORT).show();
+
+                            int p = Integer.parseInt(String.valueOf(ds.child("numberOfClasses").getValue())) * 100;
+                            int percent = p / count;
+                            count=0;
+//                            Toast.makeText(ActiveClassActivity.this, "klkl " + percent + " " + count, Toast.LENGTH_SHORT).show();
+//                        Percentage.setText("%");
+                            if (percent < 75) {
+                                Toast.makeText(ActiveClassActivity.this, "" + percent, Toast.LENGTH_SHORT).show();
+                                Percentage.setBackgroundColor(Color.parseColor("#F37070"));
+//                            Toast.makeText(ActiveClassActivity.this, "less than", Toast.LENGTH_SHORT).show();
+                            } else if (percent >= 75) {
+//                            Toast.makeText(ActiveClassActivity.this, "green", Toast.LENGTH_SHORT).show();
+                                Percentage.setBackgroundColor(Color.parseColor("#3ADE96"));
+                            }
+                            Percentage.setText(String.valueOf(percent) + "%");
+
+                        }
+                    }
+                }
+
+                    @Override
+                    public void onCancelled (@NonNull DatabaseError error){
+                        Toast.makeText(ActiveClassActivity.this, "Error!!", Toast.LENGTH_SHORT).show();
+                    }
+            });
+        }
+
+        else{
+            Toast.makeText(this, "No classes conducted yet!!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void getClassCount(){
+
+        classRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                Toast.makeText(StudentListActivity.this, "in", Toast.LENGTH_SHORT).show();
+                for(DataSnapshot dataSnapshot:snapshot.getChildren()){
+//                    Toast.makeText(StudentListActivity.this, String.valueOf(dataSnapshot.child("name").getValue()), Toast.LENGTH_SHORT).show();
+                    count+=1;
+//                    Toast.makeText(ActiveClassActivity.this, ""+count, Toast.LENGTH_SHORT).show();
+                }
+//                Toast.makeText(StudentListActivity.this, ""+count, Toast.LENGTH_SHORT).show();
+                 displayPercentage();
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(ActiveClassActivity.this, "Unable to count total classes", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
 
 }

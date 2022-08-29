@@ -44,7 +44,6 @@ public class StudentListActivity extends AppCompatActivity {
 
 
 
-
 //        Toast.makeText(this, Names.get(0), Toast.LENGTH_SHORT).show();
 //        if(Names==null)
 //            Toast.makeText(this, "null", Toast.LENGTH_SHORT).show();
@@ -77,7 +76,7 @@ public class StudentListActivity extends AppCompatActivity {
 
 
     }
-    public int getClassCount(){
+    public void getClassCount(){
         classReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -87,13 +86,13 @@ public class StudentListActivity extends AppCompatActivity {
                     count+=1;
                 }
 //                Toast.makeText(StudentListActivity.this, ""+count, Toast.LENGTH_SHORT).show();
+
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(StudentListActivity.this, "Unable to count total classes", Toast.LENGTH_SHORT).show();
             }
         });
-        return count;
     }
 
 
@@ -118,9 +117,14 @@ public class StudentListActivity extends AppCompatActivity {
 ////                    Toast.makeText(this, "hmm", Toast.LENGTH_SHORT).show();
 //                }
 //                ArrayAdapter<String> av=new ArrayAdapter<String>(StudentListActivity.this,android.R.layout.simple_list_item_1,android.R.id.text1,Names);
-                StudentViewAdapter studentViewAdapter=new StudentViewAdapter(StudentListActivity.this,R.layout.cardview2,Names,numberOfPresentClasses,count);
-                studentListView.setAdapter(studentViewAdapter);
-                Toast.makeText(StudentListActivity.this, "A"+Names.size(), Toast.LENGTH_SHORT).show();
+                if(count!=0) {
+                    StudentViewAdapter studentViewAdapter = new StudentViewAdapter(StudentListActivity.this, R.layout.cardview2, Names, numberOfPresentClasses, count);
+                    studentListView.setAdapter(studentViewAdapter);
+                    Toast.makeText(StudentListActivity.this, "A" + Names.size(), Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(StudentListActivity.this, "No classes conducted yet!!", Toast.LENGTH_SHORT).show();
+                }
             }
 
 

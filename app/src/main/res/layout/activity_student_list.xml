@@ -9,13 +9,13 @@
     <ListView
         android:id="@+id/studentListView"
         android:layout_width="340dp"
-        android:layout_height="311dp"
+        android:layout_height="655dp"
         android:divider="@null"
         android:dividerHeight="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.199" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -65,6 +65,7 @@ public class TeacherActivity extends AppCompatActivity {
                         Intent i = result.getData();
                         if (i != null) {
                             StartNewClassButton.setVisibility(View.INVISIBLE);
+                            studentList.setVisibility(View.INVISIBLE);
                             Class c = (Class) i.getSerializableExtra(NewClassCreationActivity.EXTRA);
                             String id = i.getStringExtra("ID");
                             cardView.setVisibility(View.VISIBLE);
@@ -77,6 +78,7 @@ public class TeacherActivity extends AppCompatActivity {
                                 public void onClick(View view) {
                                     cardView.setVisibility(View.GONE);
                                     StartNewClassButton.setVisibility(View.VISIBLE);
+                                    studentList.setVisibility(View.VISIBLE);
                                     classRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot snapshot) {

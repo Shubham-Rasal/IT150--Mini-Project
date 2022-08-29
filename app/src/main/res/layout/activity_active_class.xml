@@ -61,7 +61,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/activeTitle1"
-        app:layout_constraintVertical_bias="0.233" />
+        app:layout_constraintVertical_bias="0.297" />
 
     <com.ebanx.swipebtn.SwipeButton
         android:id="@+id/swipeButton"
@@ -83,7 +83,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/class_label"
-        app:layout_constraintVertical_bias="0.255" />
+        app:layout_constraintVertical_bias="0.245" />
+
+    <TextView
+        android:id="@+id/Percentage"
+        android:layout_width="128dp"
+        android:layout_height="38dp"
+        android:layout_marginBottom="592dp"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
