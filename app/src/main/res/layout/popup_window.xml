@@ -6,14 +6,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:background="#6500DFCD">
+    android:background="#D700D8FF">
 
     <TextView
         android:id="@+id/popup_title"
         android:layout_width="131dp"
         android:layout_height="39dp"
         android:layout_marginTop="28dp"
-        android:background="#A7D4FB"
+        android:background="#B49AE0EC"
         android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,9 +21,9 @@
 
     <ListView
         android:id="@+id/present_list"
-        android:layout_width="334dp"
-        android:layout_height="523dp"
-        android:background="#6FEAFF"
+        android:layout_width="361dp"
+        android:layout_height="531dp"
+        android:background="#74D9EA"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"

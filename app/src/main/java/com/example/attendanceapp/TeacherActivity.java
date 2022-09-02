@@ -163,18 +163,28 @@ public class TeacherActivity extends AppCompatActivity {
                     }
                 }
                 if(storeCorrespondingKeys.size()!=0) {
-//                    Toast.makeText(TeacherActivity.this, "First", Toast.LENGTH_SHORT).show();
                     MyAdapter myAdapter = new MyAdapter(TeacherActivity.this, R.layout.cardview, className, date, presentStudentsCount);
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            onButtonShowPopupWindowClick(view, parent.getItemAtPosition(position));
+                            for (DataSnapshot classSnapshot : snapshot.getChildren()) {
+                                Class c = classSnapshot.getValue(Class.class);
+                                assert c != null;
+                                if(c.getName().equals(parent.getItemAtPosition(position))){
+                                    onButtonShowPopupWindowClick(view, c);
+
+
+                                }
+
+
+
+                            }
                         }
                     });
                     listView.setAdapter(myAdapter);
                 }
-//                else
-//                    Toast.makeText(TeacherActivity.this, "No classes", Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(TeacherActivity.this, "No classes", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -196,7 +206,7 @@ public class TeacherActivity extends AppCompatActivity {
 
     }
 
-    public void onButtonShowPopupWindowClick(View view, Object item) {
+    public void onButtonShowPopupWindowClick(View view, Class item) {
 
         // inflate the layout of the popup window
         LayoutInflater inflater = (LayoutInflater)
@@ -224,13 +234,13 @@ public class TeacherActivity extends AppCompatActivity {
 
 
 
-        popupText.setText(String.valueOf(item));
-        Toast.makeText(this, "title"+String.valueOf(item), Toast.LENGTH_SHORT).show();
+        popupText.setText(item.getBegin() +"-"+item.getEnd());
+
 
 
         //Getting present students
         DatabaseReference pClassRef = classRef.child("");
-        Query pQuery = pClassRef.orderByChild("name").equalTo(String.valueOf(item));
+        Query pQuery = pClassRef.orderByChild("name").equalTo(String.valueOf(item.getName()));
         ValueEventListener ps = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
