@@ -11,60 +11,43 @@
         android:id="@+id/Login"
         android:layout_width="128dp"
         android:layout_height="55dp"
-        android:layout_marginBottom="66dp"
         android:gravity="center"
         android:text="Login"
         android:textSize="34sp"
-        app:layout_constraintBottom_toTopOf="@+id/studentlog"
+        app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/studentlog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="57dp"
+        android:layout_marginTop="36dp"
         android:text="Student"
-        app:layout_constraintBaseline_toBaselineOf="@+id/facultylog"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toStartOf="@+id/facultylog"
+        app:layout_constraintHorizontal_bias="0.534"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Login" />
 
     <Button
         android:id="@+id/facultylog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="63dp"
+        android:layout_marginEnd="64dp"
         android:text="Faculty"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@+id/studentlog"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="88dp"
         android:text="Register"
-        app:layout_constraintEnd_toStartOf="@+id/facultylog"
-        app:layout_constraintTop_toBottomOf="@+id/studentlog" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="52dp"
-        android:text="Create New Class"
-        app:layout_constraintStart_toStartOf="@+id/button"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
-
-    <Button
-        android:id="@+id/TeacherDashboard"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="23dp"
-        android:layout_marginEnd="11dp"
-        android:text="Teacher Dashboard"
-        app:layout_constraintEnd_toStartOf="@+id/facultylog"
-        app:layout_constraintTop_toBottomOf="@+id/studentlog" />
 </androidx.constraintlayout.widget.ConstraintLayout>

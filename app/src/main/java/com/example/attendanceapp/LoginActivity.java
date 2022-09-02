@@ -3,6 +3,7 @@ package com.example.attendanceapp;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -26,6 +27,12 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     
@@ -33,6 +40,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Button login;
     private EditText email,password;
     private ProgressBar spinner;
+    private DatabaseReference teachRef;
 
 
     //initializing firebase auth
@@ -47,6 +55,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_login);
         //asking user to turn on gps
         buttonSwitchGPS_ON();
+
+        teachRef = FirebaseDatabase.getInstance().getReference("Teachers");
 
 
         //action bar
@@ -67,24 +77,55 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         login.setOnClickListener(this);
         if (cUser != null){
-            Toast.makeText(this, "Current User:" + cUser.getEmail(), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Current User:" + cUser.getEmail(), Toast.LENGTH_SHORT).show();
         Intent itype = getIntent();
         int type = itype.getIntExtra("type", 2);
-//                        Toast.makeText(LoginActivity.this, ""+type, Toast.LENGTH_SHORT).show();
-        Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
 
         Intent i;
         if (type == 1) {
-            i = new Intent(LoginActivity.this, TeacherActivity.class);
 
+            Query getTeacher = teachRef.orderByChild("email").equalTo(cUser.getEmail());
+            ValueEventListener checkTeacher = new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                    if(snapshot.getValue() == null)
+                    {
+                        Toast.makeText(LoginActivity.this, "Teacher doesn't exist", Toast.LENGTH_SHORT).show();
+                        Intent back = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(back);
+                        finish();
+
+                    }else{
+                        Intent i = new Intent(LoginActivity.this, TeacherActivity.class);
+                        startActivity(i);
+                        finish();
+                    }
+
+
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Toast.makeText(LoginActivity.this, "Database error"+String.valueOf(error), Toast.LENGTH_SHORT).show();
+
+                }
+            };
+
+
+            getTeacher.addValueEventListener(checkTeacher);
         } else {
             i = new Intent(LoginActivity.this, ActiveClassActivity.class);
+            startActivity(i);
+            finish();
 
         }
 
         spinner.setVisibility(View.GONE);
-        startActivity(i);
-        finish();
+
+
     }
 
 

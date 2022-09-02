@@ -161,13 +161,6 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
                 } else {
 
                     if (ActivityCompat.checkSelfPermission(ActiveClassActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(ActiveClassActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                        // TODO: Consider calling
-                        //    ActivityCompat#requestPermissions
-                        // here to request the missing permissions, and then overriding
-                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                        //                                          int[] grantResults)
-                        // to handle the case where the user grants the permission. See the documentation
-                        // for ActivityCompat#requestPermissions for more details.
                         return;
                     }
                     lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ActiveClassActivity.this);
@@ -181,7 +174,6 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
 
                         activeClass = postSnapshot;
 
-                        Toast.makeText(ActiveClassActivity.this, "" + String.valueOf(postSnapshot.child("name").getValue()), Toast.LENGTH_SHORT).show();
                         classLabel.setText(String.valueOf(postSnapshot.child("name").getValue()));
 
                         break;
@@ -219,7 +211,6 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
                     @NonNull BiometricPrompt.AuthenticationResult result) {
                 super.onAuthenticationSucceeded(result);
 
-//                authenticate.setVisibility(View.GONE);
                 enableButton.setVisibility(View.GONE);
                 String email = currentUser.getEmail();
                 String id = currentUser.getUid();
@@ -227,12 +218,11 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
                 DatabaseReference s = classRef.child(activeclassRef.getKey()).child("PresentStudents");
                     s.child(id).setValue(email);
 //                    pushedStudents.add(email);
-//                    Toast.makeText(ActiveClassActivity.this, "Doesn't contain", Toast.LENGTH_SHORT).show();
 //                    studentReference.child(id).child("numberOfClasses").setValue(Integer.parseInt(String.valueOf(studentReference.child("numberOfClasses"))));
 
                     // To add fade animation
                     Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_in);
-                    classLabel.setText("Attendance marked successfully!!😊😊");
+                    classLabel.setText("Attendance marked successfully!!🙂");
                     int col = Color.parseColor("#25b84c");
                     classLabel.setBackgroundColor(col);
                     classLabel.startAnimation(animation);

@@ -39,36 +39,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //asking user to turn on gps
         buttonSwitchGPS_ON();
 
-        //Creating Back Button on the action bar
-
-
-
         StudentLogin = (Button) findViewById(R.id.studentlog);
         FacultyLogin = (Button) findViewById(R.id.facultylog);
         reg = (Button) findViewById(R.id.button);
-        new_class=findViewById(R.id.button3);
-        teacherdashboard=findViewById(R.id.TeacherDashboard);
+
 
         StudentLogin.setOnClickListener(this);
         FacultyLogin.setOnClickListener(this);
         reg.setOnClickListener(this);
-        new_class.setOnClickListener(this);
-        teacherdashboard.setOnClickListener(this);
-
+        
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.TeacherDashboard:
-                startActivity(new Intent(this,TeacherActivity.class));
-                break;
+
             case R.id.button:
                 startActivity(new Intent(this,RegistrationActivity.class));
                 break;
-            case R.id.button3:
-                startActivity(new Intent(this,NewClassCreationActivity.class));
-                break;
+
             case R.id.facultylog:
                 Intent i = new Intent(this,LoginActivity.class);
                 i.putExtra("type",1);
@@ -113,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getApplicationContext(), "turned off", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Location is turned off!!", Toast.LENGTH_SHORT).show();
 
                 if (e instanceof ResolvableApiException) {
                     try {
