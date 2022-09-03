@@ -80,6 +80,36 @@ public class NewClassCreationActivity extends AppCompatActivity {
                 if(class_name.length()==0)
                     Toast.makeText(NewClassCreationActivity.this, "Please Enter the Class Name", Toast.LENGTH_SHORT).show();
                 else{
+
+                    if(timeBegin==null){
+                        Toast.makeText(NewClassCreationActivity.this, "!", Toast.LENGTH_SHORT).show();
+                        if(timeEnd==null){
+                            timeBegin = String.valueOf(android.text.format.DateFormat.format("HH:mm", new java.util.Date()));
+                            timeEnd = (Integer.parseInt(timeBegin.substring(0, 2)) + 1) + ":" + timeBegin.substring(3, 5);
+
+//
+                        }
+                        else {
+//                            Toast.makeText(NewClassCreationActivity.this, (Integer.parseInt(timeEnd.substring(0,2))-1)+":"+timeEnd.substring(3,5), Toast.LENGTH_SHORT).show();
+                            if(Integer.parseInt(timeEnd.substring(0,2))!=0) {
+                                Toast.makeText(NewClassCreationActivity.this, "" + String.valueOf(Integer.parseInt(timeEnd.substring(0,2))-1), Toast.LENGTH_SHORT).show();
+                                timeBegin = (Integer.parseInt(timeEnd.substring(0, 2)) - 1) + ":" + timeEnd.substring(3, 5);
+                            }
+                            else {
+                                if(Integer.parseInt(timeEnd.substring(3,5))!=0)
+                                    timeBegin="00:00";
+                                else
+                                    timeBegin = timeEnd;
+                            }
+                        }
+
+
+                    }
+                    else if (timeEnd==null){
+                        timeEnd=(Integer.parseInt(timeBegin.substring(0,2))+1)+":"+timeBegin.substring(3,5);
+                    }
+
+
                     Class c=new Class(class_name,timeBegin,timeEnd,date,"1","0");
                     firebaseDatabase=FirebaseDatabase.getInstance();
                     databaseReference=firebaseDatabase.getReference("Classes");
