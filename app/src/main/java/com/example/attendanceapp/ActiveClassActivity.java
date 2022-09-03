@@ -125,7 +125,7 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
         enableButton = (SwipeButton) findViewById(R.id.swipeButton);
         classLabel = (TextView) findViewById(R.id.class_label);
         noClass = (TextView) findViewById(R.id.no_class);
-        disText = findViewById(R.id.distance);
+//        disText = findViewById(R.id.distance);
 //        authenticate.setVisibility(View.GONE);
         enableButton.setVisibility(View.GONE);
 
@@ -323,15 +323,14 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
         //13.008011, 74.797227
         //my room 13.008064, 74.795947
         double dis = distance(13.008011, 74.797227, Lat, Long);
-        disText.setText(String.valueOf(dis));
+//        disText.setText(String.valueOf(dis));
         Log.i("distance", String.valueOf(dis));
-//        if(dis<100){
+        if(dis<35){
         enableButton.setVisibility(View.VISIBLE);
         classLabel.setVisibility(View.VISIBLE);
         noClass.setVisibility(View.GONE);
         lm.removeUpdates(this);
-
-//        }
+        }
 
 
     }
