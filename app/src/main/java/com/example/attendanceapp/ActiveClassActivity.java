@@ -157,7 +157,7 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
                 if (String.valueOf(dataSnapshot.getValue()).equals("null")) {
                     enableButton.setVisibility(View.GONE);
                     classLabel.setVisibility(View.GONE);
-                    Toast.makeText(ActiveClassActivity.this, "no active class available" + dataSnapshot.getChildren(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ActiveClassActivity.this, "no active class available" , Toast.LENGTH_SHORT).show();
 
                 } else {
 
@@ -275,7 +275,6 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
         enableButton.setOnActiveListener(new OnActiveListener() {
             @Override
             public void onActive() {
-                Toast.makeText(ActiveClassActivity.this, "Active!", Toast.LENGTH_SHORT).show();
                 biometricPrompt.authenticate(promptInfo);
 
             }

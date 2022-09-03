@@ -257,7 +257,6 @@ public class TeacherActivity extends AppCompatActivity {
                 for (DataSnapshot d : PresentStudents.getChildren()){
                     pStudents.add(String.valueOf(d.getValue()));
 
-                    Toast.makeText(TeacherActivity.this, ""+d.getValue(), Toast.LENGTH_SHORT).show();
                 }
 
                 ArrayAdapter studentAdapter = new ArrayAdapter(TeacherActivity.this, android.R.layout.simple_selectable_list_item,pStudents);
@@ -290,11 +289,11 @@ public class TeacherActivity extends AppCompatActivity {
         });
 
     }
-//    @Override
-//    public void onBackPressed(){
-//        Intent startMain = new Intent(Intent.ACTION_MAIN);
-//        startMain.addCategory(Intent.CATEGORY_HOME);
-//        startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//        startActivity(startMain);
-//    }
+    @Override
+    public void onBackPressed(){
+        Intent startMain = new Intent(Intent.ACTION_MAIN);
+        startMain.addCategory(Intent.CATEGORY_HOME);
+        startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(startMain);
+    }
 }
