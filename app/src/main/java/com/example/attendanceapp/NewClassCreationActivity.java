@@ -82,7 +82,7 @@ public class NewClassCreationActivity extends AppCompatActivity {
                 else{
 
                     if(timeBegin==null){
-                        Toast.makeText(NewClassCreationActivity.this, "!", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(NewClassCreationActivity.this, "!", Toast.LENGTH_SHORT).show();
                         if(timeEnd==null){
                             timeBegin = String.valueOf(android.text.format.DateFormat.format("HH:mm", new java.util.Date()));
                             timeEnd = (Integer.parseInt(timeBegin.substring(0, 2)) + 1) + ":" + timeBegin.substring(3, 5);
@@ -92,7 +92,7 @@ public class NewClassCreationActivity extends AppCompatActivity {
                         else {
 //                            Toast.makeText(NewClassCreationActivity.this, (Integer.parseInt(timeEnd.substring(0,2))-1)+":"+timeEnd.substring(3,5), Toast.LENGTH_SHORT).show();
                             if(Integer.parseInt(timeEnd.substring(0,2))!=0) {
-                                Toast.makeText(NewClassCreationActivity.this, "" + String.valueOf(Integer.parseInt(timeEnd.substring(0,2))-1), Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(NewClassCreationActivity.this, "" + String.valueOf(Integer.parseInt(timeEnd.substring(0,2))-1), Toast.LENGTH_SHORT).show();
                                 timeBegin = (Integer.parseInt(timeEnd.substring(0, 2)) - 1) + ":" + timeEnd.substring(3, 5);
                             }
                             else {
