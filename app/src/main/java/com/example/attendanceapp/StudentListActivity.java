@@ -62,7 +62,7 @@ public class StudentListActivity extends AppCompatActivity {
 //        i.add("1");
 //        i.add("1");
 //        Names.add("Abhishek Satpathy");
-        Toast.makeText(this, "A"+Names.size(), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "A"+Names.size(), Toast.LENGTH_SHORT).show();
 //        ArrayAdapter<String> av=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,android.R.id.text1,Names);
 //        studentListView.setAdapter(av);
 
@@ -120,7 +120,7 @@ public class StudentListActivity extends AppCompatActivity {
                 if(count!=0) {
                     StudentViewAdapter studentViewAdapter = new StudentViewAdapter(StudentListActivity.this, R.layout.cardview2, Names, numberOfPresentClasses, count);
                     studentListView.setAdapter(studentViewAdapter);
-                    Toast.makeText(StudentListActivity.this, "A" + Names.size(), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(StudentListActivity.this, "A" + Names.size(), Toast.LENGTH_SHORT).show();
                 }
                 else{
                     Toast.makeText(StudentListActivity.this, "No classes conducted yet!!", Toast.LENGTH_SHORT).show();
