@@ -1,5 +1,6 @@
 package com.example.attendanceapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -78,8 +79,10 @@ public class RegistrationActivity extends AppCompatActivity implements AdapterVi
                                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                     @Override
                                                     public void onComplete(@NonNull Task<Void> task) {
-                                                        if (task.isSuccessful())
+                                                        if (task.isSuccessful()) {
                                                             Toast.makeText(RegistrationActivity.this, "Registered Successfully!!", Toast.LENGTH_SHORT).show();
+                                                            startActivity(new Intent(RegistrationActivity.this,MainActivity.class));
+                                                        }
                                                         else
                                                             Toast.makeText(RegistrationActivity.this, "Failed to register user", Toast.LENGTH_SHORT).show();
 
