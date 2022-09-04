@@ -237,7 +237,6 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
                                 if(studentSnapshot.getKey().equals(id)){
                                     int numberOfPresentStudents=Integer.parseInt(String.valueOf(studentSnapshot.child("numberOfClasses").getValue()))+1;
                                     studentSnapshot.getRef().child("numberOfClasses").setValue(numberOfPresentStudents);
-//                                    Toast.makeText(ActiveClassActivity.this, ""+Integer.parseInt(String.valueOf(studentSnapshot.child("numberOfClasses").getValue()))+1, Toast.LENGTH_SHORT).show();
                                 }
                             }
                         }
@@ -316,11 +315,14 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
     public void onLocationChanged(@NonNull Location location) {
         double Lat = location.getLatitude();
         double Long = location.getLongitude();
-//        13.007862, 74.795968
-        //13.007859, 74.796000
-        //aravali
-        //13.008011, 74.797227
-        //my room 13.008064, 74.795947
+        /*locations:
+        LHC C : 13.010572080564291, 74.79230928704018
+        II Department : 13.010947512163979, 74.792183424809
+         */
+
+
+
+
         double dis = distance(13.008011, 74.797227, Lat, Long);
 //        disText.setText(String.valueOf(dis));
         Log.i("distance", String.valueOf(dis));
