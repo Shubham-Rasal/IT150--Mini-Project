@@ -222,17 +222,16 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
 //                    studentReference.child(id).child("numberOfClasses").setValue(Integer.parseInt(String.valueOf(studentReference.child("numberOfClasses"))));
 
                     // To add fade animation
-                    Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_in);
-                    classLabel.setText("Attendance marked successfully!!🙂");
-                    int col = Color.parseColor("#25b84c");
-                    classLabel.setBackgroundColor(col);
-                    classLabel.startAnimation(animation);
+//                    Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_in);
+//                    classLabel.startAnimation(animation);
 //
 //
                     studentReference.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                            Toast.makeText(ActiveClassActivity.this, "I'm in", Toast.LENGTH_SHORT).show();
+                            classLabel.setText("Attendance marked successfully!!🙂");
+                            int col = Color.parseColor("#25b84c");
+                            classLabel.setBackgroundColor(col);
                             for(DataSnapshot studentSnapshot:snapshot.getChildren()){
                                 if(studentSnapshot.getKey().equals(id)){
                                     int numberOfPresentStudents=Integer.parseInt(String.valueOf(studentSnapshot.child("numberOfClasses").getValue()))+1;
@@ -323,15 +322,15 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
 
 
 
-        double dis = distance(13.008011, 74.797227, Lat, Long);
+        double dis = distance(13.010572080564291, 74.79230928704018, Lat, Long);
 //        disText.setText(String.valueOf(dis));
         Log.i("distance", String.valueOf(dis));
-        if(dis<35){
+//        if(dis<100){
         enableButton.setVisibility(View.VISIBLE);
         classLabel.setVisibility(View.VISIBLE);
         noClass.setVisibility(View.GONE);
         lm.removeUpdates(this);
-        }
+//        }
 
 
     }
@@ -400,7 +399,7 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
 //                    Toast.makeText(ActiveClassActivity.this, ds.getKey(), Toast.LENGTH_SHORT).show();
 //                    Toast.makeText(ActiveClassActivity.this, ID, Toast.LENGTH_SHORT).show();
                         if (ds.getKey().equals(ID)) {
-                        Toast.makeText(ActiveClassActivity.this, "I'm in", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(ActiveClassActivity.this, "I'm in", Toast.LENGTH_SHORT).show();
 
                             int p = Integer.parseInt(String.valueOf(ds.child("numberOfClasses").getValue())) * 100;
                             int percent = p / count;
@@ -408,7 +407,7 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
 //                            Toast.makeText(ActiveClassActivity.this, "klkl " + percent + " " + count, Toast.LENGTH_SHORT).show();
 //                        Percentage.setText("%");
                             if (percent < 75) {
-                                Toast.makeText(ActiveClassActivity.this, "" + percent, Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(ActiveClassActivity.this, "" + percent, Toast.LENGTH_SHORT).show();
                                 Percentage.setBackgroundColor(Color.parseColor("#F37070"));
 //                            Toast.makeText(ActiveClassActivity.this, "less than", Toast.LENGTH_SHORT).show();
                             } else if (percent >= 75) {
