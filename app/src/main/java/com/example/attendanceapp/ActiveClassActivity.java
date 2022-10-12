@@ -319,19 +319,15 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
         LHC C : 13.010572080564291, 74.79230928704018
         II Department : 13.010947512163979, 74.792183424809
          */
-
-
-
-
         double dis = distance(13.010572080564291, 74.79230928704018, Lat, Long);
 //        disText.setText(String.valueOf(dis));
-        Log.i("distance", String.valueOf(dis));
-//        if(dis<100){
-        enableButton.setVisibility(View.VISIBLE);
-        classLabel.setVisibility(View.VISIBLE);
-        noClass.setVisibility(View.GONE);
-        lm.removeUpdates(this);
-//        }
+        Log.i("Distance", String.valueOf(dis));
+        if(dis<50){
+            enableButton.setVisibility(View.VISIBLE);
+            classLabel.setVisibility(View.VISIBLE);
+            noClass.setVisibility(View.GONE);
+            lm.removeUpdates(this);
+        }
 
 
     }
