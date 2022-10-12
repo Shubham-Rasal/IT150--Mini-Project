@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -38,9 +39,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     
     
     private Button login;
+    private Button createAccount;
     private EditText email,password;
+    private TextView loginTextView;
     private ProgressBar spinner;
     private DatabaseReference teachRef;
+    private boolean isTeacher = false;
 
 
     //initializing firebase auth
@@ -53,6 +57,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
         //asking user to turn on gps
         buttonSwitchGPS_ON();
 
@@ -61,10 +66,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         //action bar
 
-        ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
-        actionBar.setHomeAsUpIndicator(R.drawable.arrow_back);
-        actionBar.setDisplayHomeAsUpEnabled(true);
+//        ActionBar actionBar = getSupportActionBar();
+//        assert actionBar != null;
+//        actionBar.setHomeAsUpIndicator(R.drawable.arrow_back);
+//        actionBar.setDisplayHomeAsUpEnabled(true);
 
         //progress bar;
         spinner = (ProgressBar) findViewById(R.id.progressBar);
@@ -74,54 +79,60 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         login = (Button) findViewById(R.id.login);
         email = (EditText) findViewById(R.id.emailId);
         password = (EditText) findViewById(R.id.password);
+        createAccount = (Button) findViewById(R.id.createAccount);
+        loginTextView = (TextView) findViewById(R.id.logintextView);
 
+        createAccount.setOnClickListener(this);
         login.setOnClickListener(this);
         if (cUser != null){
 //            Toast.makeText(this, "Current User:" + cUser.getEmail(), Toast.LENGTH_SHORT).show();
-        Intent itype = getIntent();
-        int type = itype.getIntExtra("type", 2);
+//        Intent itype = getIntent();
+//        int type = itype.getIntExtra("type", 2);
 //        Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
+//
+//        Intent i;
+//        if (type == 1) {
+//
+//            Query getTeacher = teachRef.orderByChild("email").equalTo(cUser.getEmail());
+//            ValueEventListener checkTeacher = new ValueEventListener() {
+//                @Override
+//                public void onDataChange(@NonNull DataSnapshot snapshot) {
+//
+//                    if(snapshot.getValue() == null)
+//                    {
+//                        Toast.makeText(LoginActivity.this, "Teacher doesn't exist", Toast.LENGTH_SHORT).show();
+//                        Intent back = new Intent(LoginActivity.this, MainActivity.class);
+//                        startActivity(back);
+//                        finish();
+//
+//                    }else{
+//                        Intent i = new Intent(LoginActivity.this, TeacherActivity.class);
+//                        startActivity(i);
+//                        finish();
+//                    }
+//
+//
+//
+//                }
+//
+//                @Override
+//                public void onCancelled(@NonNull DatabaseError error) {
+//                    Toast.makeText(LoginActivity.this, "Database error"+String.valueOf(error), Toast.LENGTH_SHORT).show();
+//
+//                }
+//            };
+//
+//
+//            getTeacher.addValueEventListener(checkTeacher);
+//        } else {
+//            i = new Intent(LoginActivity.this, ActiveClassActivity.class);
+//            startActivity(i);
+//            finish();
+//
+//        }
 
-        Intent i;
-        if (type == 1) {
-
-            Query getTeacher = teachRef.orderByChild("email").equalTo(cUser.getEmail());
-            ValueEventListener checkTeacher = new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                    if(snapshot.getValue() == null)
-                    {
-                        Toast.makeText(LoginActivity.this, "Teacher doesn't exist", Toast.LENGTH_SHORT).show();
-                        Intent back = new Intent(LoginActivity.this, MainActivity.class);
-                        startActivity(back);
-                        finish();
-
-                    }else{
-                        Intent i = new Intent(LoginActivity.this, TeacherActivity.class);
-                        startActivity(i);
-                        finish();
-                    }
-
-
-
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    Toast.makeText(LoginActivity.this, "Database error"+String.valueOf(error), Toast.LENGTH_SHORT).show();
-
-                }
-            };
-
-
-            getTeacher.addValueEventListener(checkTeacher);
-        } else {
-            i = new Intent(LoginActivity.this, ActiveClassActivity.class);
-            startActivity(i);
-            finish();
-
-        }
+//            Toast.makeText(this, cUser.getEmail(), Toast.LENGTH_SHORT).show();
+            checkTeacherOrStudent(cUser.getEmail());
 
         spinner.setVisibility(View.GONE);
 
@@ -149,36 +160,41 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             email.setVisibility(View.GONE);
             password.setVisibility(View.GONE);
             login.setVisibility(View.GONE);
+            loginTextView.setVisibility(View.GONE);
+            createAccount.setVisibility(View.GONE);
+
             if(!userEmail.isEmpty() && !userPass.isEmpty()) {
 
                 //sending credentials entered to validate to firebase
                 mAuth.signInWithEmailAndPassword(userEmail, userPass).addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
+
+
                         Intent itype = getIntent();
                         int type = itype.getIntExtra("type", 2);
-//                        Toast.makeText(LoginActivity.this, ""+type, Toast.LENGTH_SHORT).show();
+////                        Toast.makeText(LoginActivity.this, ""+type, Toast.LENGTH_SHORT).show();
                         Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
 
-                        Intent i;
-                        if (type == 1) {
-                            i = new Intent(LoginActivity.this, TeacherActivity.class);
+//                        if (type == 1) {
+//                            i = new Intent(LoginActivity.this, TeacherActivity.class);
+//
+//                        } else {
+//                            i = new Intent(LoginActivity.this, ActiveClassActivity.class);
+//
+//                        }
 
-                        } else {
-                            i = new Intent(LoginActivity.this, ActiveClassActivity.class);
+                       checkTeacherOrStudent(userEmail);
 
-                        }
-
-                        spinner.setVisibility(View.GONE);
-                        startActivity(i);
-                        finish();
 
 
                     } else {
-                        Toast.makeText(LoginActivity.this, "login failed", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "Login Failed", Toast.LENGTH_SHORT).show();
                         spinner.setVisibility(View.GONE);
                         email.setVisibility(View.VISIBLE);
                         password.setVisibility(View.VISIBLE);
                         login.setVisibility(View.VISIBLE);
+                        loginTextView.setVisibility(View.VISIBLE);
+                        createAccount.setVisibility(View.VISIBLE);
                     }
 
                 });
@@ -189,6 +205,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 email.setVisibility(View.VISIBLE);
                 password.setVisibility(View.VISIBLE);
                 login.setVisibility(View.VISIBLE);
+                loginTextView.setVisibility(View.VISIBLE);
+                createAccount.setVisibility(View.VISIBLE);
             }
 
 
@@ -196,8 +214,48 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
         }
+        else if(v.getId() == R.id.createAccount){
+            startActivity(new Intent(LoginActivity.this,RegistrationActivity.class));
+        }
             
     }
+
+    public void checkTeacherOrStudent(String userEmail){
+        teachRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                                Toast.makeText(LoginActivity.this, "In here", Toast.LENGTH_SHORT).show();
+                for(DataSnapshot ds: snapshot.getChildren()){
+                    String Email = (ds.child("email").getValue()).toString();
+//                                    Toast.makeText(LoginActivity.this, "123", Toast.LENGTH_SHORT).show();
+//                                    Toast.makeText(LoginActivity.this,Email, Toast.LENGTH_SHORT).show();
+                    if(Email.equals(userEmail)){
+//                                        Toast.makeText(LoginActivity.this, "Matched", Toast.LENGTH_SHORT).show();
+                        isTeacher = true;
+                    }
+                }
+//                                for(DataSnapshot ds: snapshot.getChildren())
+                Intent i;
+//                                Toast.makeText(LoginActivity.this, "Matched123", Toast.LENGTH_SHORT).show();
+                if(isTeacher){
+                    i = new Intent(LoginActivity.this, TeacherActivity.class);
+                }
+                else{
+                    i = new Intent(LoginActivity.this, ActiveClassActivity.class);
+                }
+
+                spinner.setVisibility(View.GONE);
+                startActivity(i);
+                finish();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(LoginActivity.this, "Error", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     //adding gps turning on function
     public void buttonSwitchGPS_ON() {
 
@@ -226,7 +284,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getApplicationContext(), "turned off", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Location is turned off", Toast.LENGTH_SHORT).show();
 
                 if (e instanceof ResolvableApiException) {
                     try {
@@ -241,3 +299,4 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         });
     }
 }
+

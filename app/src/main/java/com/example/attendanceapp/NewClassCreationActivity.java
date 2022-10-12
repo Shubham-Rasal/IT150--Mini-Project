@@ -76,6 +76,10 @@ public class NewClassCreationActivity extends AppCompatActivity {
         createClass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
+
+
                 String class_name=className.getText().toString();
                 if(class_name.length()==0)
                     Toast.makeText(NewClassCreationActivity.this, "Please Enter the Class Name", Toast.LENGTH_SHORT).show();

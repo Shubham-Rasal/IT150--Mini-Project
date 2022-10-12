@@ -157,7 +157,7 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
                 if (String.valueOf(dataSnapshot.getValue()).equals("null")) {
                     enableButton.setVisibility(View.GONE);
                     classLabel.setVisibility(View.GONE);
-                    Toast.makeText(ActiveClassActivity.this, "no active class available" , Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ActiveClassActivity.this, "No Active Class Available" , Toast.LENGTH_SHORT).show();
 
                 } else {
 
@@ -222,16 +222,17 @@ public class ActiveClassActivity extends AppCompatActivity implements LocationLi
 //                    studentReference.child(id).child("numberOfClasses").setValue(Integer.parseInt(String.valueOf(studentReference.child("numberOfClasses"))));
 
                     // To add fade animation
-//                    Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_in);
-//                    classLabel.startAnimation(animation);
+                    Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_in);
+                    classLabel.setText("Attendance marked successfully!!🙂");
+                    int col = Color.parseColor("#25b84c");
+                    classLabel.setBackgroundColor(col);
+                    classLabel.startAnimation(animation);
 //
 //
                     studentReference.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            classLabel.setText("Attendance marked successfully!!🙂");
-                            int col = Color.parseColor("#25b84c");
-                            classLabel.setBackgroundColor(col);
+//                            Toast.makeText(ActiveClassActivity.this, "I'm in", Toast.LENGTH_SHORT).show();
                             for(DataSnapshot studentSnapshot:snapshot.getChildren()){
                                 if(studentSnapshot.getKey().equals(id)){
                                     int numberOfPresentStudents=Integer.parseInt(String.valueOf(studentSnapshot.child("numberOfClasses").getValue()))+1;

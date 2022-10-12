@@ -81,7 +81,7 @@ public class RegistrationActivity extends AppCompatActivity implements AdapterVi
                                                     public void onComplete(@NonNull Task<Void> task) {
                                                         if (task.isSuccessful()) {
                                                             Toast.makeText(RegistrationActivity.this, "Registered Successfully!!", Toast.LENGTH_SHORT).show();
-                                                            startActivity(new Intent(RegistrationActivity.this,MainActivity.class));
+                                                            startActivity(new Intent(RegistrationActivity.this,LoginActivity.class));
                                                         }
                                                         else
                                                             Toast.makeText(RegistrationActivity.this, "Failed to register user", Toast.LENGTH_SHORT).show();
