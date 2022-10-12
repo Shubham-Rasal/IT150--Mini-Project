@@ -64,12 +64,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         teachRef = FirebaseDatabase.getInstance().getReference("Teachers");
 
 
-        //action bar
-
-//        ActionBar actionBar = getSupportActionBar();
-//        assert actionBar != null;
-//        actionBar.setHomeAsUpIndicator(R.drawable.arrow_back);
-//        actionBar.setDisplayHomeAsUpEnabled(true);
 
         //progress bar;
         spinner = (ProgressBar) findViewById(R.id.progressBar);
@@ -170,8 +164,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     if (task.isSuccessful()) {
 
 
-                        Intent itype = getIntent();
-                        int type = itype.getIntExtra("type", 2);
 ////                        Toast.makeText(LoginActivity.this, ""+type, Toast.LENGTH_SHORT).show();
                         Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
 
